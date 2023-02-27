@@ -1,0 +1,1281 @@
+{:v1
+ {:add {:method :post
+        :params ()
+        :path "/v1/script"
+        :request-body true
+        :summary "Add a new script"}
+  :addCertificate {:method :post
+                   :params ()
+                   :path "/v1/security/ssl/truststore"
+                   :request-body true
+                   :summary "Add a certificate to the trust store."}
+  :bounce {:method :put
+           :params ()
+           :path "/v1/lifecycle/bounce"
+           :request-body true
+           :summary "Bounce lifecycle phase"}
+  :browse {:method :get
+           :params ()
+           :path "/v1/script"
+           :summary "List all stored scripts"}
+  :changeOrder {:method :post
+                :params ()
+                :path "/v1/security/ldap/change-order"
+                :request-body true
+                :summary "Change LDAP server order"}
+  :changePassword {:method :put
+                   :params ({:in :path :name "userId"})
+                   :path "/v1/security/users/{userId}/change-password"
+                   :request-body true
+                   :summary "Change a user's password."}
+  :create {:method :post
+           :params ()
+           :path "/v1/security/roles"
+           :request-body true
+           :summary "Create role"}
+  :createBlobStore {:method :post
+                    :params ()
+                    :path "/v1/blobstores/s3"
+                    :request-body true
+                    :summary "Create an S3 blob store"}
+  :createBlobStore_1 {:method :post
+                      :params ()
+                      :path "/v1/blobstores/azure"
+                      :request-body true
+                      :summary "Create an Azure blob store"}
+  :createContentSelector {:method :post
+                          :params ()
+                          :path "/v1/security/content-selectors"
+                          :request-body true
+                          :summary "Create a new content selector"}
+  :createFileBlobStore {:method :post
+                        :params ()
+                        :path "/v1/blobstores/file"
+                        :request-body true
+                        :summary "Create a file blob store"}
+  :createLdapServer {:method :post
+                     :params ()
+                     :path "/v1/security/ldap"
+                     :request-body true
+                     :summary "Create LDAP server"}
+  :createPrivilege {:method :post
+                    :params ()
+                    :path "/v1/security/privileges/wildcard"
+                    :request-body true
+                    :summary "Create a wildcard type privilege."}
+  :createPrivilege_1 {:method :post
+                      :params ()
+                      :path "/v1/security/privileges/application"
+                      :request-body true
+                      :summary "Create an application type privilege."}
+  :createPrivilege_2
+  {:method :post
+   :params ()
+   :path "/v1/security/privileges/repository-content-selector"
+   :request-body true
+   :summary "Create a repository content selector type privilege."}
+  :createPrivilege_3 {:method :post
+                      :params ()
+                      :path "/v1/security/privileges/repository-view"
+                      :request-body true
+                      :summary "Create a repository view type privilege."}
+  :createPrivilege_4 {:method :post
+                      :params ()
+                      :path "/v1/security/privileges/repository-admin"
+                      :request-body true
+                      :summary "Create a repository admin type privilege."}
+  :createPrivilege_5 {:method :post
+                      :params ()
+                      :path "/v1/security/privileges/script"
+                      :request-body true
+                      :summary "Create a script type privilege."}
+  :createRepository {:method :post
+                     :params ()
+                     :path "/v1/repositories/maven/group"
+                     :request-body true
+                     :summary "Create Maven group repository"}
+  :createRepository_1 {:method :post
+                       :params ()
+                       :path "/v1/repositories/maven/hosted"
+                       :request-body true
+                       :summary "Create Maven hosted repository"}
+  :createRepository_10 {:method :post
+                        :params ()
+                        :path "/v1/repositories/npm/proxy"
+                        :request-body true
+                        :summary "Create npm proxy repository"}
+  :createRepository_11 {:method :post
+                        :params ()
+                        :path "/v1/repositories/nuget/group"
+                        :request-body true
+                        :summary "Create NuGet group repository"}
+  :createRepository_12 {:method :post
+                        :params ()
+                        :path "/v1/repositories/nuget/hosted"
+                        :request-body true
+                        :summary "Create NuGet hosted repository"}
+  :createRepository_13 {:method :post
+                        :params ()
+                        :path "/v1/repositories/nuget/proxy"
+                        :request-body true
+                        :summary "Create NuGet proxy repository"}
+  :createRepository_14 {:method :post
+                        :params ()
+                        :path "/v1/repositories/rubygems/group"
+                        :request-body true
+                        :summary "Create RubyGems group repository"}
+  :createRepository_15 {:method :post
+                        :params ()
+                        :path "/v1/repositories/rubygems/hosted"
+                        :request-body true
+                        :summary "Create RubyGems hosted repository"}
+  :createRepository_16 {:method :post
+                        :params ()
+                        :path "/v1/repositories/rubygems/proxy"
+                        :request-body true
+                        :summary "Create RubyGems proxy repository"}
+  :createRepository_17 {:method :post
+                        :params ()
+                        :path "/v1/repositories/docker/group"
+                        :request-body true
+                        :summary "Create Docker group repository"}
+  :createRepository_18 {:method :post
+                        :params ()
+                        :path "/v1/repositories/docker/hosted"
+                        :request-body true
+                        :summary "Create Docker hosted repository"}
+  :createRepository_19 {:method :post
+                        :params ()
+                        :path "/v1/repositories/docker/proxy"
+                        :request-body true
+                        :summary "Create Docker proxy repository"}
+  :createRepository_2 {:method :post
+                       :params ()
+                       :path "/v1/repositories/maven/proxy"
+                       :request-body true
+                       :summary "Create Maven proxy repository"}
+  :createRepository_20 {:method :post
+                        :params ()
+                        :path "/v1/repositories/yum/group"
+                        :request-body true
+                        :summary "Create Yum group repository"}
+  :createRepository_21 {:method :post
+                        :params ()
+                        :path "/v1/repositories/yum/hosted"
+                        :request-body true
+                        :summary "Create Yum hosted repository"}
+  :createRepository_22 {:method :post
+                        :params ()
+                        :path "/v1/repositories/yum/proxy"
+                        :request-body true
+                        :summary "Create Yum proxy repository"}
+  :createRepository_23 {:method :post
+                        :params ()
+                        :path "/v1/repositories/helm/hosted"
+                        :request-body true
+                        :summary "Create Helm hosted repository"}
+  :createRepository_24 {:method :post
+                        :params ()
+                        :path "/v1/repositories/helm/proxy"
+                        :request-body true
+                        :summary "Create Helm proxy repository"}
+  :createRepository_25 {:method :post
+                        :params ()
+                        :path "/v1/repositories/gitlfs/hosted"
+                        :request-body true
+                        :summary "Create Git LFS hosted repository"}
+  :createRepository_26 {:method :post
+                        :params ()
+                        :path "/v1/repositories/pypi/group"
+                        :request-body true
+                        :summary "Create PyPI group repository"}
+  :createRepository_27 {:method :post
+                        :params ()
+                        :path "/v1/repositories/pypi/hosted"
+                        :request-body true
+                        :summary "Create PyPI hosted repository"}
+  :createRepository_28 {:method :post
+                        :params ()
+                        :path "/v1/repositories/pypi/proxy"
+                        :request-body true
+                        :summary "Create PyPI proxy repository"}
+  :createRepository_29 {:method :post
+                        :params ()
+                        :path "/v1/repositories/conda/proxy"
+                        :request-body true
+                        :summary "Create conda proxy repository"}
+  :createRepository_3 {:method :post
+                       :params ()
+                       :path "/v1/repositories/apt/hosted"
+                       :request-body true
+                       :summary "Create APT hosted repository"}
+  :createRepository_30 {:method :post
+                        :params ()
+                        :path "/v1/repositories/conan/proxy"
+                        :request-body true
+                        :summary "Create Conan proxy repository"}
+  :createRepository_31 {:method :post
+                        :params ()
+                        :path "/v1/repositories/r/group"
+                        :request-body true
+                        :summary "Create R group repository"}
+  :createRepository_32 {:method :post
+                        :params ()
+                        :path "/v1/repositories/r/hosted"
+                        :request-body true
+                        :summary "Create R hosted repository"}
+  :createRepository_33 {:method :post
+                        :params ()
+                        :path "/v1/repositories/r/proxy"
+                        :request-body true
+                        :summary "Create R proxy repository"}
+  :createRepository_34 {:method :post
+                        :params ()
+                        :path "/v1/repositories/cocoapods/proxy"
+                        :request-body true
+                        :summary "Create Cocoapods proxy repository"}
+  :createRepository_35 {:method :post
+                        :params ()
+                        :path "/v1/repositories/go/group"
+                        :request-body true
+                        :summary "Create a Go group repository"}
+  :createRepository_36 {:method :post
+                        :params ()
+                        :path "/v1/repositories/go/proxy"
+                        :request-body true
+                        :summary "Create a Go proxy repository"}
+  :createRepository_37 {:method :post
+                        :params ()
+                        :path "/v1/repositories/p2/proxy"
+                        :request-body true
+                        :summary "Create p2 proxy repository"}
+  :createRepository_38 {:method :post
+                        :params ()
+                        :path "/v1/repositories/bower/group"
+                        :request-body true
+                        :summary "Create Bower group repository"}
+  :createRepository_39 {:method :post
+                        :params ()
+                        :path "/v1/repositories/bower/hosted"
+                        :request-body true
+                        :summary "Create Bower hosted repository"}
+  :createRepository_4 {:method :post
+                       :params ()
+                       :path "/v1/repositories/apt/proxy"
+                       :request-body true
+                       :summary "Create APT proxy repository"}
+  :createRepository_40 {:method :post
+                        :params ()
+                        :path "/v1/repositories/bower/proxy"
+                        :request-body true
+                        :summary "Create Bower proxy repository"}
+  :createRepository_5 {:method :post
+                       :params ()
+                       :path "/v1/repositories/raw/group"
+                       :request-body true
+                       :summary "Create raw group repository"}
+  :createRepository_6 {:method :post
+                       :params ()
+                       :path "/v1/repositories/raw/hosted"
+                       :request-body true
+                       :summary "Create raw hosted repository"}
+  :createRepository_7 {:method :post
+                       :params ()
+                       :path "/v1/repositories/raw/proxy"
+                       :request-body true
+                       :summary "Create raw proxy repository"}
+  :createRepository_8 {:method :post
+                       :params ()
+                       :path "/v1/repositories/npm/group"
+                       :request-body true
+                       :summary "Create npm group repository"}
+  :createRepository_9 {:method :post
+                       :params ()
+                       :path "/v1/repositories/npm/hosted"
+                       :request-body true
+                       :summary "Create npm hosted repository"}
+  :createRoutingRule {:method :post
+                      :params ()
+                      :path "/v1/routing-rules"
+                      :request-body true
+                      :summary "Create a single routing rule"}
+  :createUser {:method :post
+               :params ()
+               :path "/v1/security/users"
+               :request-body true
+               :summary "Create a new user in the default source."}
+  :delete {:method :delete
+           :params ({:in :path :name "id"})
+           :path "/v1/security/roles/{id}"
+           :summary "Delete role"}
+  :deleteAsset {:method :delete
+                :params ({:in :path :name "id"})
+                :path "/v1/assets/{id}"
+                :summary "Delete a single asset"}
+  :deleteBlobStore {:method :delete
+                    :params ({:in :path :name "name"})
+                    :path "/v1/blobstores/{name}"
+                    :summary "Delete a blob store by name"}
+  :deleteComponent {:method :delete
+                    :params ({:in :path :name "id"})
+                    :path "/v1/components/{id}"
+                    :summary "Delete a single component"}
+  :deleteContentSelector {:method :delete
+                          :params ({:in :path :name "name"})
+                          :path "/v1/security/content-selectors/{name}"
+                          :summary "Delete a content selector"}
+  :deleteEmailConfiguration {:method :delete
+                             :params ()
+                             :path "/v1/email"
+                             :summary
+                             "Disable and clear the email configuration"}
+  :deleteLdapServer {:method :delete
+                     :params ({:in :path :name "name"})
+                     :path "/v1/security/ldap/{name}"
+                     :summary "Delete LDAP server"}
+  :deletePrivilege {:method :delete
+                    :params ({:in :path :name "privilegeName"})
+                    :path "/v1/security/privileges/{privilegeName}"
+                    :summary "Delete a privilege by name."}
+  :deleteRepository {:method :delete
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/{repositoryName}"
+                     :summary "Delete repository of any format"}
+  :deleteRoutingRule {:method :delete
+                      :params ({:in :path :name "name"})
+                      :path "/v1/routing-rules/{name}"
+                      :summary "Delete a single routing rule"}
+  :deleteUser {:method :delete
+               :params ({:in :path :name "userId"})
+               :path "/v1/security/users/{userId}"
+               :summary "Delete a user."}
+  :delete_1 {:method :delete
+             :params ({:in :path :name "name"})
+             :path "/v1/script/{name}"
+             :summary "Delete stored script by name"}
+  :disableIq {:method :post
+              :params ()
+              :path "/v1/iq/disable"
+              :summary "Disable IQ server"}
+  :disableRepositoryHealthCheck
+  {:method :delete
+   :params ({:in :path :name "repositoryName"})
+   :path "/v1/repositories/{repositoryName}/health-check"
+   :summary "Disable repository health check. Proxy repositories only."}
+  :edit {:method :put
+         :params ({:in :path :name "name"})
+         :path "/v1/script/{name}"
+         :request-body true
+         :summary "Update stored script by name"}
+  :enableIq {:method :post
+             :params ()
+             :path "/v1/iq/enable"
+             :summary "Enable IQ server"}
+  :enableRepositoryHealthCheck
+  {:method :post
+   :params ({:in :path :name "repositoryName"})
+   :path "/v1/repositories/{repositoryName}/health-check"
+   :summary "Enable repository health check. Proxy repositories only."}
+  :forceRelease {:method :post
+                 :params ()
+                 :path "/v1/read-only/force-release"
+                 :summary "Forcibly release read-only"}
+  :freeze {:method :post
+           :params ()
+           :path "/v1/read-only/freeze"
+           :summary "Enable read-only"}
+  :get {:method :get
+        :params ()
+        :path "/v1/read-only"
+        :summary "Get read-only state"}
+  :getActiveRealms {:method :get
+                    :params ()
+                    :path "/v1/security/realms/active"
+                    :summary "List the active realm IDs in order"}
+  :getAssetById {:method :get
+                 :params ({:in :path :name "id"})
+                 :path "/v1/assets/{id}"
+                 :summary "Get a single asset"}
+  :getAssets {:method :get
+              :params ({:in :query :name "continuationToken"}
+                       {:in :query :name "repository"})
+              :path "/v1/assets"
+              :summary "List assets"}
+  :getBlobStore {:method :get
+                 :params ({:in :path :name "name"})
+                 :path "/v1/blobstores/s3/{name}"
+                 :summary "Get a S3 blob store configuration by name"}
+  :getBlobStore_1 {:method :get
+                   :params ({:in :path :name "name"})
+                   :path "/v1/blobstores/azure/{name}"
+                   :summary "Get an Azure blob store configuration by name"}
+  :getComponentById {:method :get
+                     :params ({:in :path :name "id"})
+                     :path "/v1/components/{id}"
+                     :summary "Get a single component"}
+  :getComponents {:method :get
+                  :params ({:in :query :name "continuationToken"}
+                           {:in :query :name "repository"})
+                  :path "/v1/components"
+                  :summary "List components"}
+  :getConfiguration {:method :get
+                     :params ()
+                     :path "/v1/iq"
+                     :summary "Get IQ server configuration"}
+  :getContentSelector {:method :get
+                       :params ({:in :path :name "name"})
+                       :path "/v1/security/content-selectors/{name}"
+                       :summary "Get a content selector by name"}
+  :getContentSelectors {:method :get
+                        :params ()
+                        :path "/v1/security/content-selectors"
+                        :summary "List content selectors"}
+  :getEmailConfiguration {:method :get
+                          :params ()
+                          :path "/v1/email"
+                          :summary "Retrieve the current email configuration"}
+  :getFileBlobStoreConfiguration
+  {:method :get
+   :params ({:in :path :name "name"})
+   :path "/v1/blobstores/file/{name}"
+   :summary "Get a file blob store configuration by name"}
+  :getLdapServer {:method :get
+                  :params ({:in :path :name "name"})
+                  :path "/v1/security/ldap/{name}"
+                  :summary "Get LDAP server"}
+  :getLdapServers {:method :get
+                   :params ()
+                   :path "/v1/security/ldap"
+                   :summary "List LDAP servers"}
+  :getLicenseStatus {:method :get
+                     :params ()
+                     :path "/v1/system/license"
+                     :summary "Get the current license status."}
+  :getPhase {:method :get
+             :params ()
+             :path "/v1/lifecycle/phase"
+             :summary "Get current lifecycle phase"}
+  :getPrivilege {:method :get
+                 :params ({:in :path :name "privilegeName"})
+                 :path "/v1/security/privileges/{privilegeName}"
+                 :summary "Retrieve a privilege by name."}
+  :getPrivileges {:method :get
+                  :params ()
+                  :path "/v1/security/privileges"
+                  :summary "Retrieve a list of privileges."}
+  :getRealms {:method :get
+              :params ()
+              :path "/v1/security/realms/available"
+              :summary "List the available realms"}
+  :getRepositories {:method :get
+                    :params ()
+                    :path "/v1/repositorySettings"
+                    :summary "List repositories"}
+  :getRepositories_1 {:method :get
+                      :params ()
+                      :path "/v1/repositories"
+                      :summary "List repositories"}
+  :getRepository {:method :get
+                  :params ({:in :path :name "repositoryName"})
+                  :path "/v1/repositories/{repositoryName}"
+                  :summary "Get repository details"}
+  :getRepository_1 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/maven/group/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_10 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/npm/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_11 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/npm/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_12 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/nuget/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_13 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/nuget/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_14 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/nuget/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_15 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/rubygems/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_16 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/rubygems/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_17 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/rubygems/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_18 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/docker/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_19 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/docker/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_2 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/maven/hosted/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_20 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/docker/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_21 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/yum/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_22 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/yum/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_23 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/yum/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_24 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/helm/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_25 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/helm/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_26 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/gitlfs/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_27 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/pypi/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_28 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/pypi/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_29 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/pypi/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_3 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/maven/proxy/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_30 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/conda/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_31 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/conan/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_32 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/r/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_33 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/r/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_34 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/r/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_35 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/cocoapods/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_36 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/go/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_37 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/go/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_38 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/p2/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_39 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/bower/group/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_4 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/apt/hosted/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_40 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/bower/hosted/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_41 {:method :get
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/bower/proxy/{repositoryName}"
+                     :summary "Get repository"}
+  :getRepository_5 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/apt/proxy/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_6 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/raw/group/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_7 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/raw/hosted/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_8 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/raw/proxy/{repositoryName}"
+                    :summary "Get repository"}
+  :getRepository_9 {:method :get
+                    :params ({:in :path :name "repositoryName"})
+                    :path "/v1/repositories/npm/group/{repositoryName}"
+                    :summary "Get repository"}
+  :getRole {:method :get
+            :params ({:in :query :name "source"} {:in :path :name "id"})
+            :path "/v1/security/roles/{id}"
+            :summary "Get role"}
+  :getRoles {:method :get
+             :params ({:in :query :name "source"})
+             :path "/v1/security/roles"
+             :summary "List roles"}
+  :getRoutingRule {:method :get
+                   :params ({:in :path :name "name"})
+                   :path "/v1/routing-rules/{name}"
+                   :summary "Get a single routing rule"}
+  :getRoutingRules {:method :get
+                    :params ()
+                    :path "/v1/routing-rules"
+                    :summary "List routing rules"}
+  :getSystemStatusChecks
+  {:method :get
+   :params ()
+   :path "/v1/status/check"
+   :summary
+   "Health check endpoint that returns the results of the system status checks"}
+  :getTaskById {:method :get
+                :params ({:in :path :name "id"})
+                :path "/v1/tasks/{id}"
+                :summary "Get a single task by id"}
+  :getTasks {:method :get
+             :params ({:in :query :name "type"})
+             :path "/v1/tasks"
+             :summary "List tasks"}
+  :getTrustStoreCertificates
+  {:method :get
+   :params ()
+   :path "/v1/security/ssl/truststore"
+   :summary "Retrieve a list of certificates added to the trust store."}
+  :getUserSources {:method :get
+                   :params ()
+                   :path "/v1/security/user-sources"
+                   :summary "Retrieve a list of the available user sources."}
+  :getUsers
+  {:method :get
+   :params ({:in :query :name "userId"} {:in :query :name "source"})
+   :path "/v1/security/users"
+   :summary
+   "Retrieve a list of users. Note if the source is not 'default' the response is limited to 100 users."}
+  :get_1 {:method :get
+          :params ({:in :path :name "format"})
+          :path "/v1/formats/{format}/upload-specs"
+          :summary "Get upload field requirements for the desired format"}
+  :get_2 {:method :get
+          :params ()
+          :path "/v1/formats/upload-specs"
+          :summary "Get upload field requirements for each supported format"}
+  :invalidateCache
+  {:method :post
+   :params ({:in :path :name "repositoryName"})
+   :path "/v1/repositories/{repositoryName}/invalidate-cache"
+   :summary
+   "Invalidate repository cache. Proxy or group repositories only."}
+  :isAvailable
+  {:method :get
+   :params ()
+   :path "/v1/status"
+   :summary
+   "Health check endpoint that validates server can respond to read requests"}
+  :isWritable
+  {:method :get
+   :params ()
+   :path "/v1/status/writable"
+   :summary
+   "Health check endpoint that validates server can respond to read and write requests"}
+  :listBlobStores {:method :get
+                   :params ()
+                   :path "/v1/blobstores"
+                   :summary "List the blob stores"}
+  :quotaStatus {:method :get
+                :params ({:in :path :name "name"})
+                :path "/v1/blobstores/{name}/quota-status"
+                :summary "Get quota status for a given blob store"}
+  :read {:method :get
+         :params ()
+         :path "/v1/security/anonymous"
+         :summary "Get Anonymous Access settings"}
+  :read_1 {:method :get
+           :params ({:in :path :name "name"})
+           :path "/v1/script/{name}"
+           :summary "Read stored script by name"}
+  :rebuildIndex
+  {:method :post
+   :params ({:in :path :name "repositoryName"})
+   :path "/v1/repositories/{repositoryName}/rebuild-index"
+   :summary
+   "Schedule a 'Repair - Rebuild repository search' Task. Hosted or proxy repositories only."}
+  :release {:method :post
+            :params ()
+            :path "/v1/read-only/release"
+            :summary "Release read-only"}
+  :removeCertificate {:method :delete
+                      :params ({:in :path :name "id"})
+                      :path "/v1/security/ssl/truststore/{id}"
+                      :summary "Remove a certificate in the trust store."}
+  :removeLicense {:method :delete
+                  :params ()
+                  :path "/v1/system/license"
+                  :summary "Uninstall license if present."}
+  :retrieveCertificate
+  {:method :get
+   :params ({:in :query :name "host"}
+            {:in :query :name "port"}
+            {:in :query :name "protocolHint"})
+   :path "/v1/security/ssl"
+   :summary
+   "Helper method to retrieve certificate details from a remote system."}
+  :run {:method :post
+        :params ({:in :path :name "id"})
+        :path "/v1/tasks/{id}/run"
+        :summary "Run task"}
+  :run_1 {:method :post
+          :params ({:in :path :name "name"})
+          :path "/v1/script/{name}/run"
+          :request-body true
+          :summary "Run stored script by name"}
+  :search {:method :get
+           :params ({:in :query :name "continuationToken"}
+                    {:in :query :name "sort"}
+                    {:in :query :name "direction"}
+                    {:in :query :name "timeout"}
+                    {:in :query :name "q"}
+                    {:in :query :name "repository"}
+                    {:in :query :name "format"}
+                    {:in :query :name "group"}
+                    {:in :query :name "name"}
+                    {:in :query :name "version"}
+                    {:in :query :name "prerelease"}
+                    {:in :query :name "md5"}
+                    {:in :query :name "sha1"}
+                    {:in :query :name "sha256"}
+                    {:in :query :name "sha512"}
+                    {:in :query :name "conan.baseVersion"}
+                    {:in :query :name "conan.channel"}
+                    {:in :query :name "docker.imageName"}
+                    {:in :query :name "docker.imageTag"}
+                    {:in :query :name "docker.layerId"}
+                    {:in :query :name "docker.contentDigest"}
+                    {:in :query :name "maven.groupId"}
+                    {:in :query :name "maven.artifactId"}
+                    {:in :query :name "maven.baseVersion"}
+                    {:in :query :name "maven.extension"}
+                    {:in :query :name "maven.classifier"}
+                    {:in :query :name "gavec"}
+                    {:in :query :name "npm.scope"}
+                    {:in :query :name "npm.author"}
+                    {:in :query :name "npm.description"}
+                    {:in :query :name "npm.keywords"}
+                    {:in :query :name "npm.license"}
+                    {:in :query :name "npm.tagged_is"}
+                    {:in :query :name "npm.tagged_not"}
+                    {:in :query :name "nuget.id"}
+                    {:in :query :name "nuget.tags"}
+                    {:in :query :name "nuget.title"}
+                    {:in :query :name "nuget.authors"}
+                    {:in :query :name "nuget.description"}
+                    {:in :query :name "nuget.summary"}
+                    {:in :query :name "p2.pluginName"}
+                    {:in :query :name "pypi.classifiers"}
+                    {:in :query :name "pypi.description"}
+                    {:in :query :name "pypi.keywords"}
+                    {:in :query :name "pypi.summary"}
+                    {:in :query :name "rubygems.description"}
+                    {:in :query :name "rubygems.platform"}
+                    {:in :query :name "rubygems.summary"}
+                    {:in :query :name "yum.architecture"}
+                    {:in :query :name "yum.name"})
+           :path "/v1/search"
+           :summary "Search components"}
+  :searchAndDownloadAssets {:method :get
+                            :params ({:in :query :name "sort"}
+                                     {:in :query :name "direction"}
+                                     {:in :query :name "timeout"}
+                                     {:in :query :name "q"}
+                                     {:in :query :name "repository"}
+                                     {:in :query :name "format"}
+                                     {:in :query :name "group"}
+                                     {:in :query :name "name"}
+                                     {:in :query :name "version"}
+                                     {:in :query :name "prerelease"}
+                                     {:in :query :name "md5"}
+                                     {:in :query :name "sha1"}
+                                     {:in :query :name "sha256"}
+                                     {:in :query :name "sha512"}
+                                     {:in :query :name "conan.baseVersion"}
+                                     {:in :query :name "conan.channel"}
+                                     {:in :query :name "docker.imageName"}
+                                     {:in :query :name "docker.imageTag"}
+                                     {:in :query :name "docker.layerId"}
+                                     {:in :query :name "docker.contentDigest"}
+                                     {:in :query :name "maven.groupId"}
+                                     {:in :query :name "maven.artifactId"}
+                                     {:in :query :name "maven.baseVersion"}
+                                     {:in :query :name "maven.extension"}
+                                     {:in :query :name "maven.classifier"}
+                                     {:in :query :name "gavec"}
+                                     {:in :query :name "npm.scope"}
+                                     {:in :query :name "npm.author"}
+                                     {:in :query :name "npm.description"}
+                                     {:in :query :name "npm.keywords"}
+                                     {:in :query :name "npm.license"}
+                                     {:in :query :name "npm.tagged_is"}
+                                     {:in :query :name "npm.tagged_not"}
+                                     {:in :query :name "nuget.id"}
+                                     {:in :query :name "nuget.tags"}
+                                     {:in :query :name "nuget.title"}
+                                     {:in :query :name "nuget.authors"}
+                                     {:in :query :name "nuget.description"}
+                                     {:in :query :name "nuget.summary"}
+                                     {:in :query :name "p2.pluginName"}
+                                     {:in :query :name "pypi.classifiers"}
+                                     {:in :query :name "pypi.description"}
+                                     {:in :query :name "pypi.keywords"}
+                                     {:in :query :name "pypi.summary"}
+                                     {:in :query :name "rubygems.description"}
+                                     {:in :query :name "rubygems.platform"}
+                                     {:in :query :name "rubygems.summary"}
+                                     {:in :query :name "yum.architecture"}
+                                     {:in :query :name "yum.name"})
+                            :path "/v1/search/assets/download"
+                            :summary "Search and download asset"}
+  :searchAssets {:method :get
+                 :params ({:in :query :name "continuationToken"}
+                          {:in :query :name "sort"}
+                          {:in :query :name "direction"}
+                          {:in :query :name "timeout"}
+                          {:in :query :name "q"}
+                          {:in :query :name "repository"}
+                          {:in :query :name "format"}
+                          {:in :query :name "group"}
+                          {:in :query :name "name"}
+                          {:in :query :name "version"}
+                          {:in :query :name "prerelease"}
+                          {:in :query :name "md5"}
+                          {:in :query :name "sha1"}
+                          {:in :query :name "sha256"}
+                          {:in :query :name "sha512"}
+                          {:in :query :name "conan.baseVersion"}
+                          {:in :query :name "conan.channel"}
+                          {:in :query :name "docker.imageName"}
+                          {:in :query :name "docker.imageTag"}
+                          {:in :query :name "docker.layerId"}
+                          {:in :query :name "docker.contentDigest"}
+                          {:in :query :name "maven.groupId"}
+                          {:in :query :name "maven.artifactId"}
+                          {:in :query :name "maven.baseVersion"}
+                          {:in :query :name "maven.extension"}
+                          {:in :query :name "maven.classifier"}
+                          {:in :query :name "gavec"}
+                          {:in :query :name "npm.scope"}
+                          {:in :query :name "npm.author"}
+                          {:in :query :name "npm.description"}
+                          {:in :query :name "npm.keywords"}
+                          {:in :query :name "npm.license"}
+                          {:in :query :name "npm.tagged_is"}
+                          {:in :query :name "npm.tagged_not"}
+                          {:in :query :name "nuget.id"}
+                          {:in :query :name "nuget.tags"}
+                          {:in :query :name "nuget.title"}
+                          {:in :query :name "nuget.authors"}
+                          {:in :query :name "nuget.description"}
+                          {:in :query :name "nuget.summary"}
+                          {:in :query :name "p2.pluginName"}
+                          {:in :query :name "pypi.classifiers"}
+                          {:in :query :name "pypi.description"}
+                          {:in :query :name "pypi.keywords"}
+                          {:in :query :name "pypi.summary"}
+                          {:in :query :name "rubygems.description"}
+                          {:in :query :name "rubygems.platform"}
+                          {:in :query :name "rubygems.summary"}
+                          {:in :query :name "yum.architecture"}
+                          {:in :query :name "yum.name"})
+                 :path "/v1/search/assets"
+                 :summary "Search assets"}
+  :setActiveRealms
+  {:method :put
+   :params ()
+   :path "/v1/security/realms/active"
+   :request-body true
+   :summary
+   "Set the active security realms in the order they should be used"}
+  :setEmailConfiguration {:method :put
+                          :params ()
+                          :path "/v1/email"
+                          :request-body true
+                          :summary "Set the current email configuration"}
+  :setLicense {:method :post
+               :params ()
+               :path "/v1/system/license"
+               :request-body true
+               :summary "Upload a new license file."}
+  :setPhase {:method :put
+             :params ()
+             :path "/v1/lifecycle/phase"
+             :request-body true
+             :summary "Move to new lifecycle phase"}
+  :stop {:method :post
+         :params ({:in :path :name "id"})
+         :path "/v1/tasks/{id}/stop"
+         :summary "Stop task"}
+  :supportzip {:method :post
+               :params ()
+               :path "/v1/support/supportzip"
+               :request-body true
+               :summary "Creates and downloads a support zip"}
+  :supportzippath {:method :post
+                   :params ()
+                   :path "/v1/support/supportzippath"
+                   :request-body true
+                   :summary "Creates a support zip and returns the path"}
+  :testEmailConfiguration
+  {:method :post
+   :params ()
+   :path "/v1/email/verify"
+   :request-body true
+   :summary
+   "Send a test email to the email address provided in the request body"}
+  :update {:method :put
+           :params ()
+           :path "/v1/security/anonymous"
+           :request-body true
+           :summary "Update Anonymous Access settings"}
+  :updateBlobStore {:method :put
+                    :params ({:in :path :name "name"})
+                    :path "/v1/blobstores/s3/{name}"
+                    :request-body true
+                    :summary "Update an S3 blob store configuration by name"}
+  :updateBlobStore_1 {:method :put
+                      :params ({:in :path :name "name"})
+                      :path "/v1/blobstores/azure/{name}"
+                      :request-body true
+                      :summary
+                      "Update an Azure blob store configuration by name"}
+  :updateConfiguration {:method :put
+                        :params ()
+                        :path "/v1/iq"
+                        :request-body true
+                        :summary "Update IQ server configuration"}
+  :updateContentSelector {:method :put
+                          :params ({:in :path :name "name"})
+                          :path "/v1/security/content-selectors/{name}"
+                          :request-body true
+                          :summary "Update a content selector"}
+  :updateFileBlobStore {:method :put
+                        :params ({:in :path :name "name"})
+                        :path "/v1/blobstores/file/{name}"
+                        :request-body true
+                        :summary
+                        "Update a file blob store configuration by name"}
+  :updateLdapServer {:method :put
+                     :params ({:in :path :name "name"})
+                     :path "/v1/security/ldap/{name}"
+                     :request-body true
+                     :summary "Update LDAP server"}
+  :updatePrivilege {:method :put
+                    :params ({:in :path :name "privilegeName"})
+                    :path "/v1/security/privileges/wildcard/{privilegeName}"
+                    :request-body true
+                    :summary "Update a wildcard type privilege."}
+  :updatePrivilege_1 {:method :put
+                      :params ({:in :path :name "privilegeName"})
+                      :path
+                      "/v1/security/privileges/application/{privilegeName}"
+                      :request-body true
+                      :summary "Update an application type privilege."}
+  :updatePrivilege_2
+  {:method :put
+   :params ({:in :path :name "privilegeName"})
+   :path "/v1/security/privileges/repository-view/{privilegeName}"
+   :request-body true
+   :summary "Update a repository view type privilege."}
+  :updatePrivilege_3
+  {:method :put
+   :params ({:in :path :name "privilegeName"})
+   :path "/v1/security/privileges/repository-admin/{privilegeName}"
+   :request-body true
+   :summary "Update a repository admin type privilege."}
+  :updatePrivilege_4
+  {:method :put
+   :params ({:in :path :name "privilegeName"})
+   :path
+   "/v1/security/privileges/repository-content-selector/{privilegeName}"
+   :request-body true
+   :summary "Update a repository content selector type privilege."}
+  :updatePrivilege_5 {:method :put
+                      :params ({:in :path :name "privilegeName"})
+                      :path "/v1/security/privileges/script/{privilegeName}"
+                      :request-body true
+                      :summary "Update a script type privilege."}
+  :updateRepository {:method :put
+                     :params ({:in :path :name "repositoryName"})
+                     :path "/v1/repositories/maven/group/{repositoryName}"
+                     :request-body true
+                     :summary "Update Maven group repository"}
+  :updateRepository_1 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/maven/hosted/{repositoryName}"
+                       :request-body true
+                       :summary "Update Maven hosted repository"}
+  :updateRepository_10 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/npm/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update npm proxy repository"}
+  :updateRepository_11 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/nuget/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update NuGet group repository"}
+  :updateRepository_12 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/nuget/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update NuGet hosted repository"}
+  :updateRepository_13 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/nuget/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update NuGet proxy repository"}
+  :updateRepository_14 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path
+                        "/v1/repositories/rubygems/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update RubyGems group repository"}
+  :updateRepository_15 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path
+                        "/v1/repositories/rubygems/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update RubyGems hosted repository"}
+  :updateRepository_16 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path
+                        "/v1/repositories/rubygems/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update RubyGems proxy repository"}
+  :updateRepository_17 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/docker/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update Docker group repository"}
+  :updateRepository_18 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path
+                        "/v1/repositories/docker/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update Docker hosted repository"}
+  :updateRepository_19 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/docker/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update Docker group repository"}
+  :updateRepository_2 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/maven/proxy/{repositoryName}"
+                       :request-body true
+                       :summary "Update Maven proxy repository"}
+  :updateRepository_20 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/yum/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update Yum group repository"}
+  :updateRepository_21 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/yum/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update Yum hosted repository"}
+  :updateRepository_22 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/yum/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update Yum proxy repository"}
+  :updateRepository_23 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/helm/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update Helm hosted repository"}
+  :updateRepository_24 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/helm/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update Helm proxy repository"}
+  :updateRepository_25 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path
+                        "/v1/repositories/gitlfs/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update Git LFS hosted repository"}
+  :updateRepository_26 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/pypi/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update PyPI group repository"}
+  :updateRepository_27 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/pypi/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update PyPI hosted repository"}
+  :updateRepository_28 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/pypi/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update PyPI proxy repository"}
+  :updateRepository_29 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/conda/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update conda proxy repository"}
+  :updateRepository_3 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/apt/hosted/{repositoryName}"
+                       :request-body true
+                       :summary "Update APT hosted repository"}
+  :updateRepository_30 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/conan/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update Conan proxy repository"}
+  :updateRepository_31 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/r/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update R group repository"}
+  :updateRepository_32 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/r/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update R hosted repository"}
+  :updateRepository_33 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/r/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update R proxy repository"}
+  :updateRepository_34 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path
+                        "/v1/repositories/cocoapods/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update Cocoapods proxy repository"}
+  :updateRepository_35 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/go/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update a Go group repository"}
+  :updateRepository_36 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/go/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update a Go proxy repository"}
+  :updateRepository_37 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/p2/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update p2 proxy repository"}
+  :updateRepository_38 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/bower/group/{repositoryName}"
+                        :request-body true
+                        :summary "Update Bower group repository"}
+  :updateRepository_39 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/bower/hosted/{repositoryName}"
+                        :request-body true
+                        :summary "Update Bower hosted repository"}
+  :updateRepository_4 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/apt/proxy/{repositoryName}"
+                       :request-body true
+                       :summary "Update APT proxy repository"}
+  :updateRepository_40 {:method :put
+                        :params ({:in :path :name "repositoryName"})
+                        :path "/v1/repositories/bower/proxy/{repositoryName}"
+                        :request-body true
+                        :summary "Update Bower proxy repository"}
+  :updateRepository_5 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/raw/group/{repositoryName}"
+                       :request-body true
+                       :summary "Update raw group repository"}
+  :updateRepository_6 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/raw/hosted/{repositoryName}"
+                       :request-body true
+                       :summary "Update raw hosted repository"}
+  :updateRepository_7 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/raw/proxy/{repositoryName}"
+                       :request-body true
+                       :summary "Update raw proxy repository"}
+  :updateRepository_8 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/npm/group/{repositoryName}"
+                       :request-body true
+                       :summary "Update npm group repository"}
+  :updateRepository_9 {:method :put
+                       :params ({:in :path :name "repositoryName"})
+                       :path "/v1/repositories/npm/hosted/{repositoryName}"
+                       :request-body true
+                       :summary "Update npm hosted repository"}
+  :updateRoutingRule {:method :put
+                      :params ({:in :path :name "name"})
+                      :path "/v1/routing-rules/{name}"
+                      :request-body true
+                      :summary "Update a single routing rule"}
+  :updateUser {:method :put
+               :params ({:in :path :name "userId"})
+               :path "/v1/security/users/{userId}"
+               :request-body true
+               :summary "Update an existing user."}
+  :update_1 {:method :put
+             :params ({:in :path :name "id"})
+             :path "/v1/security/roles/{id}"
+             :request-body true
+             :summary "Update role"}
+  :uploadComponent {:method :post
+                    :params ({:in :query :name "repository"})
+                    :path "/v1/components"
+                    :request-body true
+                    :summary "Upload a single component"}
+  :verifyConnection {:method :post
+                     :params ()
+                     :path "/v1/iq/verify-connection"
+                     :summary "Verify IQ server connection"}
+  :verifyConnection_1
+  {:method :post
+   :params ()
+   :path "/v1/azureblobstore/test-connection"
+   :request-body true
+   :summary "Verify connection using supplied Azure Blob Store settings"}}}

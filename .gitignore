@@ -1,0 +1,5 @@
+.portal/
+.cpcache
+.clj-kondo/.cache
+.calva/output-window/
+.lsp/.cache
