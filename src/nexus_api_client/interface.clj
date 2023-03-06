@@ -74,9 +74,21 @@
     (json/read-str value :key-fn keyword)
     (catch Exception _ value)))
 
+(defn json-to-edn
+  "Converts a json file to edn format and writes to file"
+  [json-f file-name]
+  (let [f (slurp json-f)
+        edn-f (json/read-str f :key-fn keyword)]
+    (spit (str file-name) edn-f)))
+
+()
+
 (comment 
   (+ 2 2)
 
+(let [f (slurp "resources/sonatype-nexus/docker-components.json")]
+  (json/read-str f  :key-fn keyword))
+(json-to-edn "resources/sonatype-nexus/docker-components.json" "test.edn")
   (remove-internal-meta [:contajners/foo :foo])
   (try-json-parse "[1, 2, 3]")
   (try-json-parse "yesnt")
