@@ -81,39 +81,55 @@
         edn-f (json/read-str f :key-fn keyword)]
     (spit (str file-name) edn-f)))
 
-()
+(defn load-edn
+  [source]
+  (let [stream source]
+    (-> stream
+        (io/reader)
+        (PushbackReader.)
+        (edn/read))))
 
-(comment 
+(defn get-image-versions
+  [image-name]
+  (let [data (load-edn "resources/sonatype-nexus/docker-components.edn")
+        images (:items data)
+        target-images (filter #(= (:name %) image-name) images)
+        tags (map #(:version %) target-images)]
+    tags))
+
+(comment
   (+ 2 2)
-
-(let [f (slurp "resources/sonatype-nexus/docker-components.json")]
-  (json/read-str f  :key-fn keyword))
-(json-to-edn "resources/sonatype-nexus/docker-components.json" "test.edn")
+  (get-image-versions "hello-world")
+  (load-edn "resources/sonatype-nexus/docker-components.edn")
+  (let [f (slurp "resources/sonatype-nexus/docker-components.json")]
+    (json/read-str f  :key-fn keyword))
+  (json-to-edn "resources/sonatype-nexus/docker-components.json" "test.edn")
   (remove-internal-meta [:contajners/foo :foo])
   (try-json-parse "[1, 2, 3]")
   (try-json-parse "yesnt")
 
- (def client (nrt/client "tcp://localhost:8080" {}))
+  (def client (nrt/client "tcp://localhost:8080" {}))
 
-(nrt/request {:client client :url "/v1.40/_ping" :method :get})
+  (nrt/request {:client client :url "/v1.40/_ping" :method :get})
 
-(nrt/request {:client client :url "/containers/json" :method :get})
+  (nrt/request {:client client :url "/containers/json" :method :get})
 
-(reduce (partial gather-params {:a 42 :b 64 :c 44})
-        {}
-        [{:name "a" :in :path}
-         {:name "b" :in :query}
-         {:name "c" :in :query}])
+  (reduce (partial gather-params {:a 42 :b 64 :c 44})
+          {}
+          [{:name "a" :in :path}
+           {:name "b" :in :query}
+           {:name "c" :in :query}])
 
-(maybe-serialize-body {:body {:a 42}})
+  (maybe-serialize-body {:body {:a 42}})
 
-(maybe-serialize-body {:body 42})
+  (maybe-serialize-body {:body 42})
 
-(interpolate-path "/a/{w}/b/{x}/{y}" {:x 41 :y 42 :z 43})
-(load-api :v1)
+  (interpolate-path "/a/{w}/b/{x}/{y}" {:x 41 :y 42 :z 43})
+  (load-api :v1)
   (let [api (load-api :v1)]
-    (->> api 
+    (->> api
          (keys)
          (int/remove-internal-meta)))
 
-  0)
+  0
+  )

@@ -1,9 +1,7 @@
 # Todo list
 
 - pt imagini docker(api de component) - sa se poata lista toate versiunile (taguri) unei imagini
-- sa poata fi sterse unele imagini
-
-- nume-imagine + versiune
+- sa poata fi sterse unele imagini-> nume-imagine + versiune
 
 - docker compose ptr nexus
 
