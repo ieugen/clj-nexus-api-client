@@ -1,0 +1,205 @@
+{
+    "items" : [ {
+      "id" : "ZG9ja2VyOjdmMDZjOGViMzQ2N2JkOWEyNWY0OTUwOWY4ODYxNWFh",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "hello-world",
+      "version" : "mytag",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/hello-world/manifests/mytag",
+        "path" : "v2/hello-world/manifests/mytag",
+        "id" : "ZG9ja2VyOjk2N2VkM2UwZWE4MGIxODlmM2U5OTMxZTA1MzhjYTBl",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T12:57:32.481+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T12:57:32.481+00:00"
+      } ]
+    }, {
+      "id" : "ZG9ja2VyOjA5OTViYmFlZWIxZmJjM2VjYzEzODJkMjkwMzM2NzA1",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "hello-world",
+      "version" : "mytag2",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/hello-world/manifests/mytag2",
+        "path" : "v2/hello-world/manifests/mytag2",
+        "id" : "ZG9ja2VyOmUxYTZiOGMzOGQzMWZhY2EzY2IxZjYwYzZhYTM5MzQ3",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T12:59:33.726+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T12:59:33.726+00:00"
+      } ]
+    }, {
+      "id" : "ZG9ja2VyOmRjMDg4NmQ4MTk4MjI1M2YzODU0N2RkYjI2NTg4MGU0",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "hello-world",
+      "version" : "mytag3",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/hello-world/manifests/mytag3",
+        "path" : "v2/hello-world/manifests/mytag3",
+        "id" : "ZG9ja2VyOjc0Y2RiZmNhNGRiOTdkNjQ1MDhkZTIzNGJmNjhhMTE4",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T12:59:44.071+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T12:59:44.071+00:00"
+      } ]
+    }, {
+      "id" : "ZG9ja2VyOmY1NWUyY2FkNDBlZjI0OWFiNjc0MjIyMDc1N2NhNjk1",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "hello-world",
+      "version" : "mytag4",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/hello-world/manifests/mytag4",
+        "path" : "v2/hello-world/manifests/mytag4",
+        "id" : "ZG9ja2VyOmVkMTI0ZDVlOWIxNWUwZjY0ZGQ0ZjY1MDY0ZmU2MzEw",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T12:59:48.851+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T12:59:48.851+00:00"
+      } ]
+    }, {
+      "id" : "ZG9ja2VyOjhhZGE0M2ZjYTIxOWY1M2U2ZWU0ODczMDc2NWY4Zjg1",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "salut-lume",
+      "version" : "tag1",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/salut-lume/manifests/tag1",
+        "path" : "v2/salut-lume/manifests/tag1",
+        "id" : "ZG9ja2VyOjYyNTRhNjg1YWM5Mzc4N2Y5ZWRmYzA4ZGNhMWJlZTdk",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T13:00:57.370+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T13:00:57.370+00:00"
+      } ]
+    }, {
+      "id" : "ZG9ja2VyOjZiMDc0ZGMzMzRlYjJiYzkwYzgxODMyZTk4MGMwNDQw",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "salut-lume",
+      "version" : "ta2",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/salut-lume/manifests/ta2",
+        "path" : "v2/salut-lume/manifests/ta2",
+        "id" : "ZG9ja2VyOmNkYWYzMTA0ZWNjN2NlM2FlODRlM2U5YTBlNGEzOTY2",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T13:01:07.248+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T13:01:07.248+00:00"
+      } ]
+    }, {
+      "id" : "ZG9ja2VyOmE0YjlhZGM3MWEyMmQ4NDg4NTE3MzMwOTA2ZjYxMmQy",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "zdrasthvooy-meer",
+      "version" : "tagof1",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/zdrasthvooy-meer/manifests/tagof1",
+        "path" : "v2/zdrasthvooy-meer/manifests/tagof1",
+        "id" : "ZG9ja2VyOjFlODNiMmFjZWYyMDVlODRjN2EzYjMwNjc0ODE1Mjdj",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T13:04:32.395+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T13:04:32.395+00:00"
+      } ]
+    }, {
+      "id" : "ZG9ja2VyOmQxM2I3NGRlODJkNmRkMGFmMGM0YmUwMTZkZmE2NmJj",
+      "repository" : "docker",
+      "format" : "docker",
+      "group" : null,
+      "name" : "zdrasthvooy-meer",
+      "version" : "tagof2",
+      "assets" : [ {
+        "downloadUrl" : "http://localhost:8081/repository/docker/v2/zdrasthvooy-meer/manifests/tagof2",
+        "path" : "v2/zdrasthvooy-meer/manifests/tagof2",
+        "id" : "ZG9ja2VyOjI4MmRhMDFiNTkyYzA1NzQzMGNmMGNiZTMzZjI1OGRk",
+        "repository" : "docker",
+        "format" : "docker",
+        "checksum" : {
+          "sha1" : "282b53ff1c1e722dfcb6f2ce382fd3cda3f463bb",
+          "sha256" : "cbf8f2e12add9f00fd416c4851f6ab4488f76620cb24fa604f27b4bfd1639b88"
+        },
+        "contentType" : "application/vnd.docker.distribution.manifest.v2+json",
+        "lastModified" : "2023-03-06T13:04:34.137+00:00",
+        "lastDownloaded" : null,
+        "uploader" : "admin",
+        "uploaderIp" : "172.18.0.1",
+        "fileSize" : 1988,
+        "blobCreated" : "2023-03-06T13:04:34.137+00:00"
+      } ]
+    } ],
+    "continuationToken" : null
+}
+  

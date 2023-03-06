@@ -7,6 +7,11 @@
 
 - docker compose ptr nexus
 
+## Components API
+* List components from the docker repo
+    - docker exec -ti clj-nexus-api-client-nexus-1 curl -u admin:admin -X GET 'http://localhost:8081/service/rest/v1/assets?repository=docker' -> resources/sonatype-nexus/docker-components.json
+ 
+
 
 ## Referinte
 
