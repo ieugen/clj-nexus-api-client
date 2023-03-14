@@ -1,19 +1,19 @@
 (ns nexus-api-client.core
   (:require
    [nexus-api-client.jvm-runtime :as rt]
-   [nexus-api-client.interface :as int]))
+   [nexus-api-client.interface :as interface]))
 
-(defn categories
+#_(defn categories
   "Returns the available categories for an engine at a specified verison.
   Categories are the kind of operations the engine can do.
   eg. :docker and v1.41
       :podman and v3.2.3"
   [engine version]
-  (->> (int/load-api) ;;TODO: add params
+  (->> (interface/load-api :v1) ;;TODO: add params
        (keys)
-       (int/remove-internal-meta)))
+       (interface/remove-internal-meta)))
 
-(defn client
+#_(defn client
   "Creates a client scoped to an engine, category, connection settings and API version.
   Connection settings:
   uri: The full URI with the protocol for the connection to the engine.
@@ -22,7 +22,7 @@
   call-timeout: Total round trip timeout in ms.
   mtls: A map having the paths to the CA, key and cert to perform Mutual TLS with the engine."
   [{:keys [engine category conn version]}]
-  (let [api (int/load-api) ;;TODO: add params
+  (let [api (interface/load-api :v1) ;;TODO: add params
         {:keys [uri
                 connect-timeout
                 read-timeout
@@ -42,14 +42,14 @@
                        :mtls mtls})
      :version version}))
 
-(defn ops
+#_(defn ops
   "Returns the supported operations for a client."
   [{:keys [api]}]
   (->> api
        (keys)
-       (int/remove-internal-meta)))
+       (interface/remove-internal-meta)))
 
-(defn doc
+#_(defn doc
   "Returns the summary and doc URL of the operation in the client."
   [{:keys [version api]} op]
   (some-> api
@@ -60,7 +60,7 @@
                          version
                          (name op)))))
 
-(defn invoke
+#_(defn invoke
   "Performs the operation with the specified client and a map of options.
   Options map:
   op: The operation to invoke on the engine. Required.
@@ -71,14 +71,14 @@
   throw-entire-message: Includes the full exception as a string. Default: false."
   [{:keys [version conn api category]} {:keys [op params data as throw-exceptions throw-entire-message]}]
   (if-let [operation (op api)]
-    (let [request-params (reduce (partial int/gather-params params)
+    (let [request-params (reduce (partial interface/gather-params params)
                                  {}
                                  (:params operation))
           request {:client conn
                    :method (:method operation)
                    :path (-> operation
                              :path
-                             (int/interpolate-path (:path request-params))
+                             (interface/interpolate-path (:path request-params))
                              (as-> path (str "/" version path)))
                    :headers (:header request-params)
                    :query-params (:query request-params)
@@ -87,12 +87,12 @@
                    :throw-exceptions throw-exceptions
                    :throw-entire-message throw-entire-message}
           response (-> request
-                       (int/maybe-serialize-body)
+                       (interface/maybe-serialize-body)
                        (rt/request))]
       (case as
         (:socket :stream) response
-        (int/try-json-parse response)))
-    (int/bail-out (format "Invalid operation %s for category %s"
+        (interface/try-json-parse response)))
+    (interface/bail-out (format "Invalid operation %s for category %s"
                            (name op)
                            (name category)))))
 
