@@ -1,7 +1,8 @@
 (ns nexus-api-client.jvm-runtime
   (:require
    [pem-reader.core :as pem]
-   [unixsocket-http.core :as http])
+   [unixsocket-http.core :as http]
+   [clj-http.client :as c])
   (:import
    [java.security KeyPair]
    [java.security.cert X509Certificate]
@@ -58,8 +59,21 @@
       (http/request)
       (:body)))
 
-(comment 
+(comment
   (def client (http/client "unix:///var/run/docker.sock"))
+  (def client (http/client "tcp://127.0.0.1:8081"))
+  (println client)
   (http/get client "/_ping")
   (+ 2 2)
-  0)
+
+  (c/get "http://google.com")
+
+  (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
+
+(c/get "http://localhost:8081/service/rest/v1/components/ZG9ja2VyOmY1NWUyY2FkNDBlZjI0OWFiNjc0MjIyMDc1N2NhNjk1")
+  
+
+(c/delete "http://localhost:8081/service/rest/v1/components/ZG9ja2VyOjdmMDZjOGViMzQ2N2JkOWEyNWY0OTUwOWY4ODYxNWFh" {:basic-auth ["admin" "admin"]})
+
+  0
+  )

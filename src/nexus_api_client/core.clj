@@ -3,7 +3,7 @@
    [nexus-api-client.jvm-runtime :as rt]
    [nexus-api-client.interface :as interface]))
 
-#_(defn categories
+(defn categories
   "Returns the available categories for an engine at a specified verison.
   Categories are the kind of operations the engine can do.
   eg. :docker and v1.41
@@ -13,7 +13,7 @@
        (keys)
        (interface/remove-internal-meta)))
 
-#_(defn client
+(defn client
   "Creates a client scoped to an engine, category, connection settings and API version.
   Connection settings:
   uri: The full URI with the protocol for the connection to the engine.
@@ -42,14 +42,14 @@
                        :mtls mtls})
      :version version}))
 
-#_(defn ops
+(defn ops
   "Returns the supported operations for a client."
   [{:keys [api]}]
   (->> api
        (keys)
        (interface/remove-internal-meta)))
 
-#_(defn doc
+(defn doc
   "Returns the summary and doc URL of the operation in the client."
   [{:keys [version api]} op]
   (some-> api
@@ -60,7 +60,7 @@
                          version
                          (name op)))))
 
-#_(defn invoke
+(defn invoke
   "Performs the operation with the specified client and a map of options.
   Options map:
   op: The operation to invoke on the engine. Required.
@@ -98,4 +98,5 @@
 
 (comment 
   (+ 2 2)
+  (categories nil nil)
   0)
