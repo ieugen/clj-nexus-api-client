@@ -1,15 +1,20 @@
 (ns nexus-api-client.core
   (:require
    [nexus-api-client.jvm-runtime :as rt]
-   [nexus-api-client.interface :as interface]))
+   [nexus-api-client.interface :as interface]
+   [clojure.edn :as edn]
+   [clojure.java.io :as io])
+  (:import
+   [java.io PushbackReader]
+   [java.util.regex Pattern]))
 
-(defn categories
+#_(defn categories
   "Returns the available categories for an engine at a specified verison.
   Categories are the kind of operations the engine can do.
   eg. :docker and v1.41
       :podman and v3.2.3"
   [engine version]
-  (->> (interface/load-api :v1) ;;TODO: add params
+  (->> (interface/load-api) ;;TODO: add params
        (keys)
        (interface/remove-internal-meta)))
 
@@ -22,7 +27,7 @@
   call-timeout: Total round trip timeout in ms.
   mtls: A map having the paths to the CA, key and cert to perform Mutual TLS with the engine."
   [{:keys [engine category conn version]}]
-  (let [api (interface/load-api :v1) ;;TODO: add params
+  (let [api (interface/load-api) ;;TODO: add params
         {:keys [uri
                 connect-timeout
                 read-timeout
@@ -44,21 +49,22 @@
 
 (defn ops
   "Returns the supported operations for a client."
-  [{:keys [api]}]
-  (->> api
+  [{:keys [v1]}]
+  (->> v1
        (keys)
        (interface/remove-internal-meta)))
 
 (defn doc
   "Returns the summary and doc URL of the operation in the client."
-  [{:keys [version api]} op]
-  (some-> api
-          op
-          (select-keys [:summary])
-          (assoc :doc-url
-                 (format (:contajners/doc-url api)
-                         version
-                         (name op)))))
+  [{:keys [v1]} op]
+  (let [url "http://localhost:8081/service/rest"
+        path (some-> v1 op (:path op))]
+    (println path)
+    (some-> v1
+            op
+            (select-keys [:summary])
+            (assoc :doc-url (str url path)))))
+
 
 (defn invoke
   "Performs the operation with the specified client and a map of options.
@@ -87,7 +93,7 @@
                    :throw-exceptions throw-exceptions
                    :throw-entire-message throw-entire-message}
           response (-> request
-                       (interface/maybe-serialize-body)
+                       (interface/maybe-serialize-body)`
                        (rt/request))]
       (case as
         (:socket :stream) response
@@ -96,7 +102,37 @@
                            (name op)
                            (name category)))))
 
-(comment 
+(comment
   (+ 2 2)
-  (categories nil nil)
-  0)
+  #_(categories nil nil)
+   (def d-client
+     (client {:engine :docker
+              :version "v1.41"
+              :category :containers
+              :conn {:uri "unix:///var/run/docker.sock"}}))
+   (def d-images
+     (client {:engine :docker
+              :version "v1.41"
+              :category :images
+              :conn {:uri "unix:///var/run/docker.sock"}}))
+  
+  (ops d-client)
+  (doc d-images :ImageCreate)
+
+
+
+  (ops (interface/load-api))
+  (doc (interface/load-api) :update_1)
+
+
+  (def images-docker (client {:engine   :docker
+                              :category :images
+                              :version  "v1.41"
+                              :conn     {:uri "unix:///var/run/docker.sock"}}))
+
+  (ops (interface/load-api))
+  (let [m {:name "nassss/aba"}]
+    (:name m))
+
+  0
+  )
