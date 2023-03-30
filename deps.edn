@@ -1,8 +1,6 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/data.json {:mvn/version "2.4.0"}
         babashka/fs {:mvn/version "0.2.16"}
-        into-docker/pem-reader {:mvn/version "1.0.2"}
-        unixsocket-http/unixsocket-http {:mvn/version "1.0.12"}
         com.squareup.okhttp3/okhttp-tls {:mvn/version "4.10.0"}
         clj-http/clj-http {:mvn/version "3.12.3"}}
  :aliases {:fetch-api {:extra-paths ["fetch_api"]

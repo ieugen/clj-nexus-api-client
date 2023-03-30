@@ -1,15 +1,13 @@
 (ns nexus-api-client.interface
-  (:require
-   [clj-http.client :as c]
-   [clojure.data.json :as json]
-   [nexus-api-client.jvm-runtime :as nrt]
-   [clojure.edn :as edn]
-   [clojure.java.io :as io]
-   [clojure.string :as s]
-   [nexus-api-client.interface :as int])
-  (:import
-   [java.io PushbackReader]
-   [java.util.regex Pattern]))
+  (:require [clj-http.client :as c]
+            [clojure.data.json :as json]
+            [clojure.edn :as edn]
+            [clojure.java.io :as io]
+            [clojure.string :as s]
+            [nexus-api-client.interface :as int]
+            [nexus-api-client.jvm-runtime :as nrt])
+  (:import [java.io PushbackReader]
+           [java.util.regex Pattern]))
 
 (defn bail-out
   [^String message]
@@ -116,10 +114,18 @@
     items-map)
 
   #_(json-to-edn "resources/sonatype-nexus/docker-components.json")
-  #_(remove-internal-meta [:contajners/foo :foo])
-  #_(try-json-parse "[1, 2, 3]")
+  (remove-internal-meta [:contajners/foo :foo])
+  (try-json-parse "[1, 2, 3]")
   #_(try-json-parse "yesnt")
 
+
+ (reduce (partial gather-params {:a 42 :b 64 :c 44})
+         {}
+         [{:name "a" :in :path}
+          {:name "b" :in :query}
+          {:name "c" :in :query}])
+  
+  
   (def client (nrt/client "tcp://localhost:8080" {}))
   (def client (nrt/client "http://localhost:8081"))
 
@@ -139,11 +145,14 @@
   (maybe-serialize-body {:body 42})
 
   (interpolate-path "/a/{w}/b/{x}/{y}" {:x 41 :y 42 :z 43})
+  (interpolate-path "/{repoName}/" {:repoName "nas"})
   #_(load-api :v1)
   #_(let [api (load-api :v1)]
       (->> api
            (keys)
            (int/remove-internal-meta)))
   (load-api)
+  (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
+  
   0
   )

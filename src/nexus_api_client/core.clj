@@ -1,12 +1,10 @@
 (ns nexus-api-client.core
-  (:require
-   [nexus-api-client.jvm-runtime :as rt]
-   [nexus-api-client.interface :as interface]
-   [clojure.edn :as edn]
-   [clojure.java.io :as io])
-  (:import
-   [java.io PushbackReader]
-   [java.util.regex Pattern]))
+  (:require [clojure.edn :as edn]
+            [clojure.java.io :as io]
+            [nexus-api-client.interface :as interface]
+            [nexus-api-client.jvm-runtime :as rt])
+  (:import [java.io PushbackReader]
+           [java.util.regex Pattern]))
 
 #_(defn categories
   "Returns the available categories for an engine at a specified verison.
@@ -59,14 +57,13 @@
   [{:keys [v1]} op]
   (let [url "http://localhost:8081/service/rest"
         path (some-> v1 op (:path op))]
-    (println path)
     (some-> v1
             op
-            (select-keys [:summary])
+            (select-keys [:method :path :params :summary])
             (assoc :doc-url (str url path)))))
 
 
-(defn invoke
+#_(defn invoke
   "Performs the operation with the specified client and a map of options.
   Options map:
   op: The operation to invoke on the engine. Required.
@@ -102,27 +99,73 @@
                            (name op)
                            (name category)))))
 
+(defn create-query
+  [m]
+  (clojure.string/join "&" (map #(str (name (key %)) "=" (val %)) m)))
+
+(defn invoke
+  [conn-opts invoke-opts]
+  (let [url (:endpoint conn-opts)
+        user (-> conn-opts :creds :user)
+        pass (-> conn-opts :creds :pass)
+        api (interface/load-api)
+        op-name (:operation invoke-opts)
+        ops-opts (doc api op-name)
+        supplied-params (:params invoke-opts)
+        ops-params (:params ops-opts)
+        request-params (reduce (partial interface/gather-params supplied-params)
+                               {}
+                               ops-params)
+        query-params (:query request-params)
+        interpolate-path-opts (:path request-params)
+        method (clojure.string/upper-case (name (:method ops-opts)))
+        path (:path ops-opts)
+        new-path (interface/interpolate-path path interpolate-path-opts)]
+    (if (empty? query-params) 
+      (str "curl -u " user ":" pass " -X " method " " url new-path)
+      (str "curl -u " user ":" pass " -X " method " " url new-path "?" (create-query query-params)))))
+
+
 (comment
-  (+ 2 2)
-  #_(categories nil nil)
-   (def d-client
-     (client {:engine :docker
-              :version "v1.41"
-              :category :containers
-              :conn {:uri "unix:///var/run/docker.sock"}}))
-   (def d-images
-     (client {:engine :docker
-              :version "v1.41"
-              :category :images
-              :conn {:uri "unix:///var/run/docker.sock"}}))
   
+  (defn invoke
+    [conn-opts invoke-opts]
+    (let []
+      (println "hello")))
+
+  (invoke {:endpoint "http://localhost:8081/service/rest"
+           :creds {:user "admin" :pass "admin"}}
+          {:operation :getRepository
+           :params {:repositoryName "docker"}})
+  
+  (invoke {:endpoint "http://localhost:8081/service/rest"
+           :creds {:user "admin" :pass "admin"}}
+          {:operation :getRole
+           :params {:privilegeName "nass" :userId "admin" :source "default" :id "abraca-dabra"}})
+
+  (let [m {:userId "nas" :source "default"}]
+    (clojure.string/join "&" (map #(str (name (key %)) "=" (val %)) m)))
+  
+  (str '(":userId=nas" ":source=default"))
+
+  (def d-client
+    (client {:engine :docker
+             :version "v1.41"
+             :category :containers
+             :conn {:uri "unix:///var/run/docker.sock"}}))
+  (def d-images
+    (client {:engine :docker
+             :version "v1.41"
+             :category :images
+             :conn {:uri "unix:///var/run/docker.sock"}}))
+
   (ops d-client)
   (doc d-images :ImageCreate)
 
 
 
   (ops (interface/load-api))
-  (doc (interface/load-api) :update_1)
+  (doc (interface/load-api) :getPrivileges)
 
 
   (def images-docker (client {:engine   :docker
@@ -131,8 +174,6 @@
                               :conn     {:uri "unix:///var/run/docker.sock"}}))
 
   (ops (interface/load-api))
-  (let [m {:name "nassss/aba"}]
-    (:name m))
 
   0
   )
