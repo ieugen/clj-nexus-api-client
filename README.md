@@ -1,4 +1,7 @@
-This project was heavily inspired from  [contajners](https://github.com/lispyclouds/contajners) and uses Open API Document from <nexus_url>/service/rest/swagger.json. Based on this document, some operations can be performed on the sonatype nexus repository manager.    
+
+
+This project was heavily inspired from  [contajners](https://github.com/lispyclouds/contajners) and uses Open API Document from <nexus_url>/service/rest/swagger.json.
+Based on this document, some operations can be performed on the Sonatype Nexus repository manager.
 
 A comprehensive listing of REST API endpoints and functionality is documented [here](https://help.sonatype.com/repomanager3/integrations/rest-and-integration-api).
 
@@ -7,14 +10,44 @@ A comprehensive listing of REST API endpoints and functionality is documented [h
 ## Installation
 
 #### Clojure CLI/deps.edn
+
+Using with deps.edn
+
 ```clojure
-{com.github.ieugen/clj-nexus-api-client {:git/sha "<COMMIT ID HERE>"}}
+com.github.ieugen/clj-nexus-api-client {:git/sha "<COMMIT ID HERE>"}
 ```
 ## Usage
 
 ### An example REPL session
 
-- the service is assumed to be running on `http://localhost:8081`
+The service is assumed to be running on `http://localhost:8081` .
+The project contains instructions on how to setup a local Sonatype Nexus using docker-compose.
+
+## Setup Sonatype Nexus using docker compose
+
+```sh
+# start sonatype nexus container in detached mode
+docker compose up -d
+
+# list logs and follow logs
+docker compose logs -f
+
+# Capture admin password that is generated
+export NEXUS_ADMIN_PASS=$(docker exec -ti clj-nexus-api-client-nexus-1 cat /nexus-data/admin.password)
+echo $NEXUS_ADMIN_PASS
+
+# Now you can start clojure in the same terminal and access the the env var
+# Update the :git/sha value to the latest main commit id
+clojure -Sdeps '{:deps {com.github.ieugen/clj-nexus-api-client {:git/sha "5cf2e6922376a4c51328ce10d52eba986febe43e"}}}'
+
+Cloning: https://github.com/ieugen/clj-nexus-api-client.git
+Checking out: https://github.com/ieugen/clj-nexus-api-client.git at 5cf2e6922376a4c51328ce10d52eba986febe43e
+Clojure 1.11.1
+user=>
+
+```
+
+Once you have clojure up
 
 ```clojure
 user=> (require '[nexus-api-client.core :as c])
