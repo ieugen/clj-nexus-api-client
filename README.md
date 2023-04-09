@@ -30,7 +30,7 @@ The project contains instructions on how to setup a local Sonatype Nexus using d
 docker compose up -d
 
 # list logs and follow logs
-docker compose logs -f
+docker compose logs -f clj-nexus-api-client-nexus-1
 
 # Capture admin password that is generated
 export NEXUS_ADMIN_PASS=$(docker exec -ti clj-nexus-api-client-nexus-1 cat /nexus-data/admin.password)
@@ -38,10 +38,10 @@ echo $NEXUS_ADMIN_PASS
 
 # Now you can start clojure in the same terminal and access the the env var
 # Update the :git/sha value to the latest main commit id
-clojure -Sdeps '{:deps {com.github.ieugen/clj-nexus-api-client {:git/sha "5cf2e6922376a4c51328ce10d52eba986febe43e"}}}'
+clojure -Sdeps '{:deps {com.github.ieugen/clj-nexus-api-client {:git/sha "ff6257357ef9464a42f9b8a528d240c44d44446a"}}}'
 
 Cloning: https://github.com/ieugen/clj-nexus-api-client.git
-Checking out: https://github.com/ieugen/clj-nexus-api-client.git at 5cf2e6922376a4c51328ce10d52eba986febe43e
+Checking out: https://github.com/ieugen/clj-nexus-api-client.git at ff6257357ef9464a42f9b8a528d240c44d44446a
 Clojure 1.11.1
 user=>
 
@@ -50,10 +50,12 @@ user=>
 Once you have clojure up
 
 ```clojure
-user=> (require '[nexus-api-client.core :as c])
+user=> (require '[nexus-api-client.core :as c] '[nexus-api-client.interface :as interface])
 nil
-user=> (require '[nexus-api-client.interface :as interface])
-nil
+
+;; get nexus passowrd from environment
+user=> (def nexus-pass (System/getenv "NEXUS_ADMIN_PASS"))
+#'user/nexus-pass
 
 user=> (c/ops (interface/load-api))
 (:getPrivileges
@@ -125,14 +127,14 @@ user=> (c/doc (interface/load-api) :getRepository)
 
 
 user=> (c/invoke {:endpoint "http://localhost:8081/service/rest"
-           :creds {:user "admin" :pass "admin"}}
+           :creds {:user "admin" :pass nexus-pass}}
           {:operation :getRepository
            :params {:repositoryName "docker"}})
 "curl -u admin:admin -X GET http://localhost:8081/service/rest/v1/repositories/docker"
 
 
 user=> (c/invoke {:endpoint "http://localhost:8081/service/rest"
-           :creds {:user "admin" :pass "admin"}}
+           :creds {:user "admin" :pass nexus-pass}}
           {:operation :getAssetById
            :params {:id "bWF2ZW4tY2VudHJhbDozZjVjYWUwMTc2MDIzM2I2MjRiOTEwMmMwMmNiYmU4YQ'"}})
 "curl -u admin:admin -X GET http://localhost:8081/service/rest/v1/assets/bWF2ZW4tY2VudHJhbDozZjVjYWUwMTc2MDIzM2I2MjRiOTEwMmMwMmNiYmU4YQ"
