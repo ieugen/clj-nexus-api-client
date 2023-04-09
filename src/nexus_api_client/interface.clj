@@ -3,9 +3,7 @@
             [clojure.data.json :as json]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clojure.string :as s]
-            [nexus-api-client.interface :as int]
-            [nexus-api-client.jvm-runtime :as nrt])
+            [clojure.string :as s])
   (:import [java.io PushbackReader]
            [java.util.regex Pattern]))
 
@@ -124,15 +122,6 @@
          [{:name "a" :in :path}
           {:name "b" :in :query}
           {:name "c" :in :query}])
-  
-  
-  (def client (nrt/client "tcp://localhost:8080" {}))
-  (def client (nrt/client "http://localhost:8081"))
-
-  (nrt/request {:client client :url "/v1.40/_ping" :method :get})
-  (nrt/request {:client client :url "/service/rest/v1/components?repository=docker" :method :get})
-
-  (nrt/request {:client client :url "/containers/json" :method :get})
 
   (reduce (partial gather-params {:a 42 :b 64 :c 44})
           {}

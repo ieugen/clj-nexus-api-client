@@ -1,7 +1,6 @@
 (ns nexus-api-client.core
-  (:require [nexus-api-client.interface :as interface])
-  (:import [java.io PushbackReader]
-           [java.util.regex Pattern]))
+  (:require [nexus-api-client.interface :as interface]
+            [clojure.string :as str]))
 
 #_(defn categories
   "Returns the available categories for an engine at a specified verison.
@@ -61,7 +60,7 @@
 
 (defn create-query
   [m]
-  (clojure.string/join "&" (map #(str (name (key %)) "=" (val %)) m)))
+  (str/join "&" (map #(str (name (key %)) "=" (val %)) m)))
 
 (defn invoke
   "Generates a string representing a curl command which can be run to perform the operation with the specified client and a set of params.
@@ -86,7 +85,7 @@
                                ops-params)
         query-params (:query request-params)
         interpolate-path-opts (:path request-params)
-        method (clojure.string/upper-case (name (:method ops-opts)))
+        method (str/upper-case (name (:method ops-opts)))
         path (:path ops-opts)
         new-path (interface/interpolate-path path interpolate-path-opts)]
     (if (empty? query-params) 
