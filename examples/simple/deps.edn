@@ -1,0 +1,3 @@
+{:paths ["src"]
+ :deps {com.github.ieugen/clj-nexus-api-client
+        {:local/root "../.."}}}

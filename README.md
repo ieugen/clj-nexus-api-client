@@ -30,7 +30,7 @@ The project contains instructions on how to setup a local Sonatype Nexus using d
 docker compose up -d
 
 # list logs and follow logs
-docker compose logs -f clj-nexus-api-client-nexus-1
+docker compose logs -f
 
 # Capture admin password that is generated
 export NEXUS_ADMIN_PASS=$(docker exec -ti clj-nexus-api-client-nexus-1 cat /nexus-data/admin.password)
@@ -38,7 +38,7 @@ echo $NEXUS_ADMIN_PASS
 
 # Now you can start clojure in the same terminal and access the the env var
 # Update the :git/sha value to the latest main commit id
-clojure -Sdeps '{:deps {com.github.ieugen/clj-nexus-api-client {:git/sha "ff6257357ef9464a42f9b8a528d240c44d44446a"}}}'
+clojure -Sdeps '{:deps {com.github.ieugen/clj-nexus-api-client {:git/sha "7b686a3bffcbf29a3de86711e588a80afea8c237"}}}'
 
 Cloning: https://github.com/ieugen/clj-nexus-api-client.git
 Checking out: https://github.com/ieugen/clj-nexus-api-client.git at ff6257357ef9464a42f9b8a528d240c44d44446a

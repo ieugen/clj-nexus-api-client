@@ -19,8 +19,8 @@
 (defn load-api
   "Loads the API EDN file from resources."
   []
-  (if-let [config "resources/sonatype-nexus/api.edn"]
-    (-> config
+  (if-let [config "sonatype-nexus/api.edn"]
+    (-> (io/resource config)
         (io/reader)
         (PushbackReader.)
         (edn/read))
