@@ -37,15 +37,6 @@
       request-params
       (update-in request-params [(keyword in)] assoc param (param supplied-params)))))
 
-(defn maybe-serialize-body
-  "If the body is a map, convert it to JSON and attach the correct headers."
-  [{:keys [body] :as request}]
-  (if (map? body)
-    (-> request
-        (assoc-in [:headers "content-type"] "application/json")
-        (update :body json/write-str))
-    request))
-
 (defn interpolate-path
   "Replaces all occurrences of {k1}, {k2} ... with the value map provided.
   Example:
@@ -63,59 +54,11 @@
                         (str value))
              (dissoc value-map param)))))
 
-(defn try-json-parse
-  "Attempts to parse `value` as a JSON string. no-op if its not a valid JSON string."
-  [value]
-  (try
-    (json/read-str value :key-fn keyword)
-    (catch Exception _ value)))
-
-;;;;;;;;;;;;;;;;;
-
-#_(defn json-to-edn
-  "Converts a json file to edn format and writes to file"
-  [json-f file-name]
-  (let [f (slurp json-f)
-        edn-f (json/read-str f :key-fn keyword)]
-    (spit (str file-name) edn-f)))
-
-
-#_(defn load-edn
-  [source]
-  (let [stream source]
-    (-> stream
-        (io/reader)
-        (PushbackReader.)
-        (edn/read))))
-
-#_(defn get-assets-list [repo]
-  (let [url (str "http://localhost:8081/service/rest/v1/components?repository=" repo)
-        req (c/get url)
-        body (:body req)
-        assets (json/read-str body :key-fn keyword)]
-    (:items assets)))
-
-#_(defn get-image-versions
-  [args]
-  (println (:name args))
-  (println (:repo args))
-  (let [assets (get-assets-list (:repo args))
-        img-name (:name args)
-        target-images (filter #(= (:name %) img-name) assets)
-        tags (map #(:version %) target-images)]
-    (println target-images)))
-
 (comment
   (let [components-request (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
         components-body (:body components-request)
         items-map (json/read-str components-body :key-fn keyword)]
     items-map)
-
-  #_(json-to-edn "resources/sonatype-nexus/docker-components.json")
-  (remove-internal-meta [:contajners/foo :foo])
-  (try-json-parse "[1, 2, 3]")
-  #_(try-json-parse "yesnt")
-
 
  (reduce (partial gather-params {:a 42 :b 64 :c 44})
          {}
@@ -129,17 +72,9 @@
            {:name "b" :in :query}
            {:name "c" :in :query}])
 
-  (maybe-serialize-body {:body {:a 42}})
-
-  (maybe-serialize-body {:body 42})
-
   (interpolate-path "/a/{w}/b/{x}/{y}" {:x 41 :y 42 :z 43})
   (interpolate-path "/{repoName}/" {:repoName "nas"})
-  #_(load-api :v1)
-  #_(let [api (load-api :v1)]
-      (->> api
-           (keys)
-           (int/remove-internal-meta)))
+  
   (load-api)
   (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
   

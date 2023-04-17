@@ -2,45 +2,6 @@
   (:require [nexus-api-client.interface :as interface]
             [clojure.string :as str]))
 
-#_(defn categories
-  "Returns the available categories for an engine at a specified verison.
-  Categories are the kind of operations the engine can do.
-  eg. :docker and v1.41
-      :podman and v3.2.3"
-  [engine version]
-  (->> (interface/load-api) ;;TODO: add params
-       (keys)
-       (interface/remove-internal-meta)))
-
-#_(defn client
-  "Creates a client scoped to an engine, category, connection settings and API version.
-  Connection settings:
-  uri: The full URI with the protocol for the connection to the engine.
-  read-timeout: Read timeout in ms.
-  write-timeout: Write timeout in ms.
-  call-timeout: Total round trip timeout in ms.
-  mtls: A map having the paths to the CA, key and cert to perform Mutual TLS with the engine."
-  [{:keys [engine category conn version]}]
-  (let [api (interface/load-api) ;;TODO: add params
-        {:keys [uri
-                connect-timeout
-                read-timeout
-                write-timeout
-                call-timeout
-                mtls]}
-        conn]
-    {:category category
-     :api (-> api
-              category
-              (merge (select-keys api [:contajners/doc-url])))
-     :conn (rt/client uri
-                      {:connect-timeout-ms connect-timeout
-                       :read-timeout-ms read-timeout
-                       :write-timeout-ms write-timeout
-                       :call-timeout-ms call-timeout
-                       :mtls mtls})
-     :version version}))
-
 (defn ops
   "Returns the supported operations for sonatype nexus (v1) API."
   [{:keys [v1]}]
