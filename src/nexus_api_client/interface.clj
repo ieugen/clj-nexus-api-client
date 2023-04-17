@@ -1,8 +1,7 @@
 (ns nexus-api-client.interface
   (:require [nexus-api-client.core :as core]
             [clj-http.client :as c]
-            [clojure.data.json :as json]
-            [clojure.string :as str]))
+            [clojure.data.json :as json]))
 
 (defn ops
   "Returns the supported operations for sonatype nexus (v1) API."
@@ -44,12 +43,15 @@
                                ops-params)
         query-params (:query request-params)
         interpolate-path-opts (:path request-params)
-        method (str/upper-case (name (:method ops-opts)))
+        method (name (:method ops-opts))
         path (:path ops-opts)
-        new-path (core/interpolate-path path interpolate-path-opts)]
-    (if (empty? query-params)
-      (str "curl -u " user ":" pass " -X " method " " url new-path)
-      (str "curl -u " user ":" pass " -X " method " " url new-path "?" (core/create-query query-params)))))
+        new-path (core/interpolate-path path interpolate-path-opts)
+        client (if (empty? query-params)
+                 (str url new-path)
+                 (str url new-path "?" (core/create-query query-params)))
+        to-call (str "c/" method " " client)]
+    to-call
+    ))
 
 
 (comment
@@ -64,6 +66,8 @@
            :creds {:user "admin" :pass "admin"}}
           {:operation :getRepository
            :params {:repositoryName "docker"}})
+  
+  
 
   (invoke {:endpoint "http://localhost:8081/service/rest"
            :creds {:user "admin" :pass "admin"}}
@@ -80,6 +84,7 @@
   (doc (core/load-api) :getAssetById)
 
   (ops (core/load-api))
+  (c/get "http://localhost:8081/service/rest/v1/repositories/docker")
 
   0
   )
