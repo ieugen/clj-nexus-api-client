@@ -1,7 +1,8 @@
 (ns nexus-api-client.core
   (:require [clojure.string :as str]
             [clojure.edn :as edn]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [clj-http.client :as c])
   (:import
    [java.util.regex Pattern]
    [java.io PushbackReader]))
@@ -57,7 +58,20 @@
   [m]
   (str/join "&" (map #(str (name (key %)) "=" (val %)) m)))
 
+(defn api-request [method url & [opts]]
+    (c/request
+     (merge {:method method :url (str url)} opts)))
+
 (comment
+
+  (let [components-request (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
+        components-body (:body components-request)
+        items-map (json/read-str components-body :key-fn keyword)]
+    items-map)
+  (api-request :get "http://localhost:8081/service/rest" "/v1/components?repository=docker")
+
+  (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
+
   (reduce (partial gather-params {:a 42 :b 64 :c 44})
           {}
           [{:name "a" :in :path}

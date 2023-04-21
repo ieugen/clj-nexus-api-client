@@ -1,6 +1,5 @@
 (ns nexus-api-client.interface
   (:require [nexus-api-client.core :as core]
-            [clj-http.client :as c]
             [clojure.data.json :as json]))
 
 (defn ops
@@ -46,29 +45,21 @@
         method (name (:method ops-opts))
         path (:path ops-opts)
         new-path (core/interpolate-path path interpolate-path-opts)
-        client (if (empty? query-params)
-                 (str url new-path)
-                 (str url new-path "?" (core/create-query query-params)))
-        to-call (str "c/" method " " client)]
-    to-call
-    ))
+        invoke-url (if (empty? query-params)
+                     (str url new-path)
+                     (str url new-path "?" (core/create-query query-params)))]
+    (core/api-request method invoke-url)))
+
+
+
 
 
 (comment
-  (let [components-request (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
-        components-body (:body components-request)
-        items-map (json/read-str components-body :key-fn keyword)]
-    items-map)
-
-  (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
-
   (invoke {:endpoint "http://localhost:8081/service/rest"
            :creds {:user "admin" :pass "admin"}}
           {:operation :getRepository
            :params {:repositoryName "docker"}})
   
-  
-
   (invoke {:endpoint "http://localhost:8081/service/rest"
            :creds {:user "admin" :pass "admin"}}
           {:operation :getAssetById
@@ -84,7 +75,6 @@
   (doc (core/load-api) :getAssetById)
 
   (ops (core/load-api))
-  (c/get "http://localhost:8081/service/rest/v1/repositories/docker")
 
   0
   )
