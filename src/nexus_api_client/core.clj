@@ -2,7 +2,8 @@
   (:require [clojure.string :as str]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clj-http.client :as c])
+            [clj-http.client :as c]
+            [jsonista.core :as json])
   (:import
    [java.util.regex Pattern]
    [java.io PushbackReader]))
@@ -62,6 +63,9 @@
     (c/request
      (merge {:method method :url (str url)} opts)))
 
+(defn json->edn [s]
+  (json/read-value s (json/object-mapper {:decode-key-fn true})))
+
 (comment
 
   (let [components-request (c/get "http://localhost:8081/service/rest/v1/components?repository=docker")
@@ -86,5 +90,8 @@
 
   (interpolate-path "/a/{w}/b/{x}/{y}" {:x 41 :y 42 :z 43})
   (interpolate-path "/{repoName}/" {:repoName "nas"})
+
+  (json/read-value "{\n  \"name\" : \"docker\",\n  \"format\" : \"docker\",\n  \"type\" : \"hosted\",\n  \"url\" : \"http://localhost:8081/repository/docker\",\n  \"attributes\" : { }\n}" (json/object-mapper {:decode-key-fn true}))
+
   0
   )

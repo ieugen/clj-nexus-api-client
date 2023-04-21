@@ -1,6 +1,7 @@
 (ns nexus-api-client.interface
   (:require [nexus-api-client.core :as core]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [jsonista.core :as j]))
 
 (defn ops
   "Returns the supported operations for sonatype nexus (v1) API."
@@ -47,12 +48,9 @@
         new-path (core/interpolate-path path interpolate-path-opts)
         invoke-url (if (empty? query-params)
                      (str url new-path)
-                     (str url new-path "?" (core/create-query query-params)))]
-    (core/api-request method invoke-url)))
-
-
-
-
+                     (str url new-path "?" (core/create-query query-params)))
+        response-body (:body (core/api-request method invoke-url))]
+    (core/json->edn response-body)))
 
 (comment
   (invoke {:endpoint "http://localhost:8081/service/rest"
