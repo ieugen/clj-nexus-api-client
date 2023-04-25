@@ -1,12 +1,11 @@
 (ns nexus-api-client.core
-  (:require [clojure.string :as str]
+  (:require [clj-http.client :as c]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clj-http.client :as c]
+            [clojure.string :as str]
             [jsonista.core :as json])
-  (:import
-   [java.util.regex Pattern]
-   [java.io PushbackReader]))
+  (:import [java.io PushbackReader]
+           [java.util.regex Pattern]))
 
 (defn gather-params
   "Reducer fn categorizing the params as :header, :query or :path.

@@ -4,13 +4,12 @@
 
 (comment
 
-  (c/doc (interface/load-api) :getRepositories)
+  (interface/doc (c/load-api) :getRepositories)
 
   (System/getenv "NEXUS_ADMIN_PASS")
 
 
   (let [uri (java.net.URI/create "file:///var/run/docker.sock")]
-    (println uri
-             "host: " (.getHost uri) ))
+    (println uri "host: " (.getHost uri) ))
 
   )

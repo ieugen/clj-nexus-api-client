@@ -1,7 +1,5 @@
 (ns nexus-api-client.interface
-  (:require [nexus-api-client.core :as core]
-            [clojure.data.json :as json]
-            [jsonista.core :as j]))
+  (:require [nexus-api-client.core :as core]))
 
 (defn ops
   "Returns the supported operations for sonatype nexus (v1) API."
@@ -55,23 +53,24 @@
                          (str url new-path "?" (core/create-query query-params)))
             response-body (:body (core/api-request method invoke-url))]
         (core/json->edn response-body))
-      (catch Exception e (prn (let [api (core/load-api)
-                                    ops-opts (doc api op-name)
-                                    ops-params (:params ops-opts)
-                                    request-params (reduce (partial core/gather-params supplied-params)
-                                                           {}
-                                                           ops-params)
-                                    query-params (:query request-params)
-                                    interpolate-path-opts (:path request-params)
-                                    method (name (:method ops-opts))
-                                    path (:path ops-opts)
-                                    new-path (core/interpolate-path path interpolate-path-opts)
-                                    invoke-url (if (empty? query-params)
-                                                 (str url new-path)
-                                                 (str url new-path "?" (core/create-query query-params)))]
-                                (str "caught exception: \n" (.getMessage e)
-                                     "\n Request: " invoke-url
-                                     "\n Response: " (core/api-request method invoke-url))))))))
+      (catch Exception e
+        (prn (let [api (core/load-api)
+                   ops-opts (doc api op-name)
+                   ops-params (:params ops-opts)
+                   request-params (reduce (partial core/gather-params supplied-params)
+                                          {}
+                                          ops-params)
+                   query-params (:query request-params)
+                   interpolate-path-opts (:path request-params)
+                   method (name (:method ops-opts))
+                   path (:path ops-opts)
+                   new-path (core/interpolate-path path interpolate-path-opts)
+                   invoke-url (if (empty? query-params)
+                                (str url new-path)
+                                (str url new-path "?" (core/create-query query-params)))]
+               (str "caught exception: \n" (.getMessage e)
+                    "\n Request: " invoke-url
+                    "\n Response: " (core/api-request method invoke-url))))))))
 
 
 
