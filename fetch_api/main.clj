@@ -1,17 +1,12 @@
 (ns main
-  "Heavily borrowed from Rahuλ Dé - lispyclouds 
+  "Heavily borrowed from Rahuλ Dé - lispyclouds
    https://github.com/lispyclouds/contajners/blob/main/fetch_api/main.clj"
-  (:require
-   [babashka.http-client :as http]
-   [babashka.fs :as fs]
-   [clojure.java.io :as io]
-   [clojure.string :as s])
-  (:import
-   [io.swagger.parser OpenAPIParser]
-   [io.swagger.v3.oas.models Operation PathItem]
-   [io.swagger.v3.oas.models.parameters Parameter]
-   [io.swagger.v3.parser.core.models ParseOptions]
-   [java.util.concurrent Executors Future]))
+  (:require [babashka.http-client :as http]
+            [clojure.string :as s])
+  (:import [io.swagger.parser OpenAPIParser]
+           [io.swagger.v3.oas.models Operation PathItem]
+           [io.swagger.v3.oas.models.parameters Parameter]
+           [io.swagger.v3.parser.core.models ParseOptions]))
 
 (def resource-path "resources/sonatype-nexus")
 
@@ -28,8 +23,7 @@
 
 (defn find-first
   [pred coll]
-  (some #(when (pred %)
-           %)
+  (some #(when (pred %) %)
         coll))
 
 ;; TODO: Better?
@@ -71,13 +65,13 @@
 ;; TODO: Parse and validate the types someday
 (defn ->params
   "Given a io.swagger.v3.oas.models.parameters.Parameter, returns a map of necessary keys."
-  [^Parameter param] 
+  [^Parameter param]
   {:name (.getName param)
    :in (keyword (.getIn param))})
 
 (defn ->operation
   "Given a path, http method and an io.swagger.v3.oas.models.Operation, returns a map of operation id and necessary keys."
-  [path method ^Operation operation] 
+  [path method ^Operation operation]
   (let [op {:summary (.getSummary operation)
             :method (-> method
                         str
@@ -127,16 +121,12 @@
 
 
 
-(comment 
-  
+(comment
+
   (spit "resources/sonatype-nexus/api.json"
         (fetch-spec "https://localhost:8080/service/rest/swagger.json"))
-  
+
   (spit "resources/sonatype-nexus/api.edn"
         (-> (fetch-spec "https://localhost:8080/service/rest/swagger.json")
             (parse #{})))
-  
-  
-  
-  
   )
