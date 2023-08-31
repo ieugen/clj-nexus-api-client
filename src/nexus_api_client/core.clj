@@ -58,9 +58,13 @@
   [m]
   (str/join "&" (map #(str (name (key %)) "=" (val %)) m)))
 
-(defn api-request [method url & [opts]]
-    (c/request
-     (merge {:method method :url (str url)} opts)))
+(defn api-request
+  ([method url]
+   (api-request method url nil))
+  ([method url opts]
+  ;;  (println method url opts)
+   (c/request
+    (merge {:method method :url (str url)} opts))))
 
 (defn json->edn [s]
   (json/read-value s (json/object-mapper {:decode-key-fn true})))
