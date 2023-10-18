@@ -53,11 +53,17 @@
                          (str url new-path "?" (core/create-query query-params)))
             response-body (:body (core/api-request method invoke-url {:basic-auth [user pass]}))]
         (core/json->edn response-body))
-      (catch Exception e
-        (throw e)))))
+      (catch clojure.lang.ExceptionInfo e
+        (let [data (ex-data ^Throwable e)
+              body (:body data)]
+          (prn (.getMessage e)
+               "response-body: " body))))))
 
 
 (comment
+
+
+  
   (invoke {:endpoint "http://localhost:8081/service/rest"
            :creds {:user "admin" :pass "admin"}}
           {:operatio :getRepository
