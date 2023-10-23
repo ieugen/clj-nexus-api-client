@@ -179,12 +179,6 @@
     (println (apply str (repeat 25 "-")))
     (doseq [{:keys [name]} repos] (println name))))
 
-(defn- fetch-components [conn opts continuation-token]
-  (let [response (-> (merge opts {:continuationToken continuation-token})
-                     (invoke conn))]
-    {:items (:items response)
-     :continuationToken (:continuationToken response)}))
-
 (defn list-images [repo-name cfg]
   (let [{:keys [endpoint user pass]} cfg
         conn {:endpoint endpoint
@@ -193,23 +187,25 @@
               :params {:repository repo-name}}
         components (atom [])
         continuation-token (atom nil)]
-    (loop [t @continuation-token]
-      (let [response (invoke conn (merge opts {:continuationToken t}))
+    (loop []
+      (let [response (invoke conn (assoc-in opts [:params :continuationToken] @continuation-token))
             items (:items response)
             new-token (:continuationToken response)
             new-components (concat @components items)]
         (reset! components new-components)
         (reset! continuation-token new-token)
+        #_(reset! continuation-token new-token)
         (when new-token
-              (recur new-token)))
-      (println "Nexus docker images for " repo-name " repository:")
-      (println (apply str (repeat 35 "-")))
-      (doseq [{:keys [name version id assets]} @components]
-        (let [asset (first assets)
-              uploader (:uploader asset)]
-          (println
-           (str (when repo-name
-                  (str repo-name "/")) name ":" version "\t uploaded by: " uploader)))))))
+          #_(println "Nexus docker images for " repo-name " repository:")
+          #_(println (apply str (repeat 35 "-")))
+          #_(doseq [{:keys [name version id assets]} @components]
+            (let [asset (first assets)
+                  uploader (:uploader asset)]
+              (println
+               (str (when repo-name
+                      (str repo-name "/")) name ":" version "\t uploaded by: " uploader))))
+          (println new-token)
+          (recur))))))
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args  global-cli-options)
@@ -235,18 +231,3 @@
 
 
 
-(comment
-
-
-  (doc (load-api) :getAssetById)
-
-  
-  
-  
- 
-(let [m {:items [{:a "a"} {:b "b"}]}]
-  (-> m :items))
- 
-
-
-  )
