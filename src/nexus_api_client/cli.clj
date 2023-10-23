@@ -6,22 +6,8 @@
             [cheshire.core :as json]
             [babashka.http-client :as http])
   (:import [java.io PushbackReader]
-           [java.util.regex Pattern]))
-
-(def cli-options
-  ;; An option with a required argument
-  [["-p" "--port PORT" "Port number"
-    :default 80
-    :parse-fn #(Integer/parseInt %)
-    :validate [#(< 0 % 0x10000) "Must be a number between 0 and 65536"]]
-   ;; A non-idempotent option (:default is applied first)
-   ["-v" nil "Verbosity level"
-    :id :verbosity
-    :default 0
-    :update-fn inc] ; Prior to 0.4.1, you would have to use:
-                   ;; :assoc-fn (fn [m k _] (update-in m [k] inc))
-   ;; A boolean option defaulting to nil
-   ["-h" "--help"]])
+           [java.util.regex Pattern]
+           [java.time.format DateTimeFormatter]))
 
 (defn remove-internal-meta
   "Removes keywords namespaced with :contajners. They are for internal use."
@@ -142,7 +128,125 @@
       (catch clojure.lang.ExceptionInfo e
         (let [data (ex-data ^Throwable e)
               body (:body data)]
-          (prn (.getMessage e)
+          (println (.getMessage e)
                "response-body: " body))))))
 
+(defn usage [options-summary]
+  (println (->> ["Usage: list [params]"
+             ""
+             "Parameters:"
+             "  --repository <repository-name>"
+             "  --image <image-name>"
+             "Options:"
+             options-summary]
+            (str/join \newline))))
 
+(defn error-msg [errors]
+  (binding [*out* *err*]
+    (println "The following errors occurred while parsing your command:\n\n"
+             (str/join  \newline errors))))
+
+(def global-cli-options
+  [[nil "--config NAME" "Configuration file name" :default "config.edn"]
+   ["-l" "--list" "list the repositories from nexus"]
+   ["-r" "--repository NAME" "list the images for a specific repository"]
+   ["-i" "--image NAME" "list the tags for a specific image"]
+   [nil "--doc OP-NAME" "document named api operation"]
+   ["-v" nil "Verbosity level; may be specified multiple times to increase value"
+    :id :verbosity
+    :default 0
+    :update-fn inc]
+   ["-h" "--help"]])
+
+(defn load-config!
+  "Returns the content of config file as a clojure map datastructure"
+  [^String config]
+  (let [config-path (.getAbsolutePath (io/file config))]
+    (try
+      (read-string (slurp config-path))
+      (catch java.io.FileNotFoundException e
+        (binding [*out* *err*]
+          (println "Missing config file" (.getMessage e)
+                   "\nYou can use --config path_to_file to specify a path to config file"))))))
+
+(defn list-repos [cfg]
+  (let [{:keys [endpoint user pass]} cfg
+        conn {:endpoint endpoint
+              :creds {:user user :pass pass}}
+        opts {:operation :getRepositories_1}
+        repos (invoke conn opts)]
+    (println "Nexus docker repositories: ")
+    (println (apply str (repeat 25 "-")))
+    (doseq [{:keys [name]} repos] (println name))))
+
+(defn- fetch-components [conn opts continuation-token]
+  (let [response (-> (merge opts {:continuationToken continuation-token})
+                     (invoke conn))]
+    {:items (:items response)
+     :continuationToken (:continuationToken response)}))
+
+(defn list-images [repo-name cfg]
+  (let [{:keys [endpoint user pass]} cfg
+        conn {:endpoint endpoint
+              :creds {:user user :pass pass}}
+        opts {:operation :getComponents
+              :params {:repository repo-name}}
+        components (atom [])
+        continuation-token (atom nil)]
+    (loop [t @continuation-token]
+      (let [response (invoke conn (merge opts {:continuationToken t}))
+            items (:items response)
+            new-token (:continuationToken response)
+            new-components (concat @components items)]
+        (reset! components new-components)
+        (reset! continuation-token new-token)
+        (when new-token
+              (recur new-token)))
+      (println "Nexus docker images for " repo-name " repository:")
+      (println (apply str (repeat 35 "-")))
+      (doseq [{:keys [name version id assets]} @components]
+        (let [asset (first assets)
+              uploader (:uploader asset)]
+          (println
+           (str (when repo-name
+                  (str repo-name "/")) name ":" version "\t uploaded by: " uploader)))))))
+
+(defn -main [& args]
+  (let [{:keys [options arguments errors summary]} (parse-opts args  global-cli-options)
+        config (:config options)
+        action (first arguments)
+        op-name (keyword (:doc options))
+        repo-name (:repository options)
+        cfg (load-config! config)]
+    #_(println "HHHere is config:" cfg "\n first arg: " "\n options: " options "\n arguments: " arguments "\n summary: " summary)
+    (cond
+      errors (error-msg errors)
+      (nil? (:config options)) (error-msg "No config provided \n --config [file-name]>")
+      (:help options) (usage summary)
+      (:doc options) (println (doc (load-api) op-name))
+      :else (case action
+              "list" (cond
+                       (not (:repository options)) (list-repos cfg)
+                       (and (:repository options) (:image options)) (println "called --repo and --image")
+                       (:repository options) (list-images repo-name cfg)
+                       )
+
+              "delete" (println (+ 2 2))))))
+
+
+
+(comment
+
+
+  (doc (load-api) :getAssetById)
+
+  
+  
+  
+ 
+(let [m {:items [{:a "a"} {:b "b"}]}]
+  (-> m :items))
+ 
+
+
+  )

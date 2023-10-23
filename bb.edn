@@ -2,5 +2,5 @@
  :paths ["src" "resources"]
  :deps {org.babashka/http-client {:mvn/version "0.3.11"}}
  :tasks {:requires ([nexus-api-client.cli :as c])
-         list-images {:doc "Print docker images"
-                      :task (c/-main)}}}
+         nexus {:doc "Print docker images"
+               :task (apply c/-main *command-line-args*)}}}
