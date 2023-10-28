@@ -6,8 +6,7 @@
             [cheshire.core :as json]
             [babashka.http-client :as http])
   (:import [java.io PushbackReader]
-           [java.util.regex Pattern]
-           [java.time.format DateTimeFormatter]))
+           [java.util.regex Pattern]))
 
 (defn remove-internal-meta
   "Removes keywords namespaced with :contajners. They are for internal use."
@@ -84,7 +83,8 @@
   ;;  (println method url opts)
    (try (http/request
          (merge {:method method :uri (str url)} opts))
-        (catch java.lang.IllegalStateException e (println "Bad request: \n method: " method "\n uri: " url "\n opts: " opts)))))
+        (catch java.lang.IllegalStateException e 
+          (println "Bad request: \n method: " method "\n uri: " url "\n opts: " opts)))))
 
 
 (defn json->edn [s]
@@ -151,11 +151,8 @@
    ["-l" "--list" "list the repositories from nexus"]
    ["-r" "--repository NAME" "list the images for a specific repository"]
    ["-i" "--image NAME" "list the tags for a specific image"]
+   [nil "--version NAME" "filter images by tag name"]
    [nil "--doc OP-NAME" "document named api operation"]
-   ["-v" nil "Verbosity level; may be specified multiple times to increase value"
-    :id :verbosity
-    :default 0
-    :update-fn inc]
    ["-h" "--help"]])
 
 (defn load-config!
@@ -169,43 +166,119 @@
           (println "Missing config file" (.getMessage e)
                    "\nYou can use --config path_to_file to specify a path to config file"))))))
 
-(defn list-repos [cfg]
+(defn get-repos-data [cfg]
   (let [{:keys [endpoint user pass]} cfg
         conn {:endpoint endpoint
               :creds {:user user :pass pass}}
         opts {:operation :getRepositories_1}
         repos (invoke conn opts)]
+    repos))
+
+(defn list-repos [cfg]
+  (let [repos (get-repos-data cfg)]
     (println "Nexus docker repositories: ")
     (println (apply str (repeat 25 "-")))
     (doseq [{:keys [name]} repos] (println name))))
 
-(defn list-images [repo-name cfg]
+(defn get-images-data [cfg repo-name]
   (let [{:keys [endpoint user pass]} cfg
         conn {:endpoint endpoint
               :creds {:user user :pass pass}}
         opts {:operation :getComponents
               :params {:repository repo-name}}
-        components (atom [])
-        continuation-token (atom nil)]
-    (loop []
-      (let [response (invoke conn (assoc-in opts [:params :continuationToken] @continuation-token))
+        components (atom [])]
+    (loop [token nil]
+      (let [opts (if token (assoc-in opts [:params :continuationToken] token) opts)
+            response (invoke conn opts)
             items (:items response)
-            new-token (:continuationToken response)
-            new-components (concat @components items)]
-        (reset! components new-components)
-        (reset! continuation-token new-token)
-        #_(reset! continuation-token new-token)
+            new-token (:continuationToken response)]
+        (swap! components concat items)
         (when new-token
-          #_(println "Nexus docker images for " repo-name " repository:")
-          #_(println (apply str (repeat 35 "-")))
-          #_(doseq [{:keys [name version id assets]} @components]
-            (let [asset (first assets)
-                  uploader (:uploader asset)]
-              (println
-               (str (when repo-name
-                      (str repo-name "/")) name ":" version "\t uploaded by: " uploader))))
-          (println new-token)
-          (recur))))))
+          (recur new-token))))
+    @components))
+
+(defn get-images-data-by-name [cfg repo-name image-name]
+  (let [{:keys [endpoint user pass]} cfg
+        conn {:endpoint endpoint
+              :creds {:user user :pass pass}}
+        opts {:operation :search
+              :params {:repository repo-name
+                       :name image-name}}
+        components (atom [])]
+    (loop [token nil]
+      (let [opts (if token (assoc-in opts [:params :continuationToken] token) opts)
+            response (invoke conn opts)
+            items (:items response)
+            new-token (:continuationToken response)]
+        (swap! components concat items)
+        (when new-token
+          (recur new-token))))
+    @components))
+
+(defn get-images-data-by-version [cfg repo-name image-name version]
+  (let [{:keys [endpoint user pass]} cfg
+        conn {:endpoint endpoint
+              :creds {:user user :pass pass}}
+        opts {:operation :search
+              :params {:repository repo-name
+                       :name image-name
+                       :version version}}
+        components (atom [])]
+    (loop [token nil]
+      (let [opts (if token (assoc-in opts [:params :continuationToken] token) opts)
+            response (invoke conn opts)
+            items (:items response)
+            new-token (:continuationToken response)]
+        (swap! components concat items)
+        (when new-token
+          (recur new-token))))
+    @components))
+
+(defn select-image-fields [image]
+  (let [id (:id image)
+        repo (:repository image)
+        image-name (:name image)
+        tag (:version image)]
+    {:id id :repository repo :name image-name :tag tag}))
+
+(defn images-new-structure 
+  ([cfg repo-name]
+   (let [data (get-images-data cfg repo-name)]
+     (map select-image-fields data)))
+  ([cfg repo-name image-name]
+   (let [data (get-images-data-by-name cfg repo-name image-name)]
+     (map select-image-fields data)))
+  ([cfg repo-name image-name version]
+   (let [data (get-images-data-by-version cfg repo-name image-name version)]
+     (map select-image-fields data))))
+
+(defn print-image-format [image]
+  (let [{:keys [id repository name tag]} image
+        repo (str repository "/" name)]
+    (println repo "\t" tag "\t" id)))
+
+(defn list-images 
+  ([cfg repo-name] (let [images (images-new-structure cfg repo-name)]
+                     (doall (map print-image-format images))))
+  ([cfg repo-name image-name] (let [images (images-new-structure cfg repo-name image-name)]
+                                (doall (map print-image-format images))))
+  ([cfg repo-name image-name version] (let [images (images-new-structure cfg repo-name image-name version)]
+                                        (doall (map print-image-format images)))))
+
+(defn delete-image [cfg image]
+  (let [{:keys [id]} image
+        {:keys [endpoint user pass]} cfg
+        conn {:endpoint endpoint
+              :creds {:user user :pass pass}}
+        opts {:operation :deleteComponent
+              :params {:name id}}]
+    (println ":deleteComponent " id)))
+
+(defn delete-images-by-tag [cfg repo image tag]
+  (let [images (images-new-structure cfg repo image tag)]
+    #_(doall (map #(delete-image cfg %) images))
+    (doall (map #(println ":deleteComponent " (:id %) ) images))))
+
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args  global-cli-options)
@@ -213,6 +286,8 @@
         action (first arguments)
         op-name (keyword (:doc options))
         repo-name (:repository options)
+        image-name (:image options)
+        version (:version options)
         cfg (load-config! config)]
     #_(println "HHHere is config:" cfg "\n first arg: " "\n options: " options "\n arguments: " arguments "\n summary: " summary)
     (cond
@@ -223,11 +298,18 @@
       :else (case action
               "list" (cond
                        (not (:repository options)) (list-repos cfg)
-                       (and (:repository options) (:image options)) (println "called --repo and --image")
-                       (:repository options) (list-images repo-name cfg)
-                       )
+                       (and repo-name image-name version) (list-images cfg repo-name image-name version)
+                       (and (:repository options) (:image options)) (list-images cfg repo-name image-name)
+                       (:repository options) (list-images cfg repo-name))
 
-              "delete" (println (+ 2 2))))))
+              "delete" (cond
+                         (or (not (:repository options))
+                             (not (:image options))
+                             (not (:version options)))
+                         (println "To delete an image, you must provide repository-name, image-name and version")
+                         (and (:repository options)
+                              (:image options)
+                              (:version options)) (delete-images-by-tag cfg repo-name image-name version))))))
 
 
 
