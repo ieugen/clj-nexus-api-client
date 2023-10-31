@@ -23,8 +23,7 @@
    ["-l" "--list" "list the repositories from nexus"]
    ["-r" "--repository NAME" "list the images for a specific repository"]
    ["-i" "--image NAME" "list the tags for a specific image"]
-   [nil "--version NAME" "filter images by tag name"]
-   [nil "--doc OP-NAME" "document named api operation"]
+   [nil "--tag NAME" "filter images by tag name"]
    ["-h" "--help"]])
 
 (defn get-repos-data [cfg]
@@ -115,8 +114,8 @@
 
 (defn print-image-format [image]
   (let [{:keys [id repository name tag]} image
-        repo (str repository "/" name)]
-    (println repo "\t" tag "\t" id)))
+        repo (str repository "/" name ":" tag)]
+    (println repo "\t\t" id)))
 
 (defn list-images 
   ([cfg repo-name] (let [images (images-new-structure cfg repo-name)]
@@ -147,7 +146,7 @@
         action (first arguments)
         repo-name (:repository options)
         image-name (:image options)
-        version (:version options)
+        version (:tag options)
         cfg (cc/load-config! config)]
     (cond
       errors (error-msg errors)
