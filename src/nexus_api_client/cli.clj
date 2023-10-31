@@ -4,11 +4,15 @@
             [nexus-api-client.cli-core :as cc]))
 
 (defn usage [options-summary]
-  (println (->> ["Usage: list [params]"
+  (println (->> ["Usage:"
+                  " list [params]"
+                  " delete [params] - all params are required for this action" 
              ""
              "Parameters:"
-             "  --repository <repository-name>"
-             "  --image <image-name>"
+             "  -r or --repository <repository-name>"
+             "  -i or --image <image-name>"
+             "  -t or --tag <image-tag"
+             "  --dry-run - used only with 'delete' action to list the images that will be deleted"
              "Options:"
              options-summary]
             (str/join \newline))))
@@ -20,10 +24,10 @@
 
 (def global-cli-options
   [[nil "--config NAME" "Configuration file name" :default "config.edn"]
-   ["-l" "--list" "list the repositories from nexus"]
    ["-r" "--repository NAME" "list the images for a specific repository"]
    ["-i" "--image NAME" "list the tags for a specific image"]
-   [nil "--tag NAME" "filter images by tag name"]
+   ["-t" "--tag NAME" "filter images by tag name"]
+   [nil "--dry-run" "Lists the images that will be deleted"]
    ["-h" "--help"]])
 
 (defn get-repos-data [cfg]
@@ -134,6 +138,11 @@
               :params {:name id}}]
     (println ":deleteComponent " id)))
 
+(defn dry-run-delete [cfg repo image tag]
+  (let [images (images-new-structure cfg repo image tag)]
+    (doall (map #(do (println "Deleting image: ") 
+                     (print-image-format %)) images))))
+
 (defn delete-images-by-tag [cfg repo image tag]
   (let [images (images-new-structure cfg repo image tag)]
     #_(doall (map #(delete-image cfg %) images))
@@ -162,11 +171,13 @@
               "delete" (cond
                          (or (not (:repository options))
                              (not (:image options))
-                             (not (:version options)))
+                             (not (:tag options)))
                          (println "To delete an image, you must provide repository-name, image-name and version")
+                         (:dry-run options) (dry-run-delete cfg repo-name image-name version)
                          (and (:repository options)
                               (:image options)
-                              (:version options)) (delete-images-by-tag cfg repo-name image-name version))))))
+                              (:tag options)) (delete-images-by-tag cfg repo-name image-name version))
+              (usage summary)))))
 
 
 
