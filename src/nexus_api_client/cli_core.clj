@@ -1,11 +1,9 @@
 (ns nexus-api-client.cli-core
-  (:require [clojure.edn :as edn]
-            [clojure.string :as str]
-            [cheshire.core :as json]
-            [clojure.java.io :as io]
-            [babashka.http-client :as http])
-  (:import [java.io PushbackReader]
-           [java.util.regex Pattern]))
+  (:require
+   [cheshire.core :as json]
+   [clojure.java.io :as io]
+   [babashka.http-client :as http]
+   [nexus-api-client.core :as c]))
 
 
 (defn load-config!
@@ -19,20 +17,6 @@
           (println "Missing config file" (.getMessage e)
                    "\nYou can use --config path_to_file to specify a path to config file"))))))
 
-(defn bail-out
-  [^String message]
-  (throw (IllegalArgumentException. message)))
-
-(defn load-api
-  "Loads the API EDN file from resources."
-  []
-  (if-let [config "sonatype-nexus/api.edn"]
-    (-> (io/resource config)
-        (io/reader)
-        (PushbackReader.)
-        (edn/read))
-    (bail-out "Cannot load api, the engine, version combo may not be supported.")))
-
 (defn doc
   "Returns essential information about the operation."
   [{:keys [v1]} op endpoint]
@@ -42,38 +26,6 @@
             op
             (select-keys [:method :path :params :summary])
             (assoc :doc-url (str url path)))))
-
-(defn create-query
-  [m]
-  (str/join "&" (map #(str (name (key %)) "=" (val %)) m)))
-
-(defn gather-params
-  "Reducer fn categorizing the params as :header, :query or :path.
-  supplied-params: map of params the user has passed when invoking.
-  request-params: accumulator for all the params to be actually sent.
-  each param in the spec is passed as the last arg and categorized by `in` if it is supplied."
-  [supplied-params request-params {:keys [name in]}]
-  (let [param (keyword name)]
-    (if-not (contains? supplied-params param)
-      request-params
-      (update-in request-params [(keyword in)] assoc param (param supplied-params)))))
-
-(defn interpolate-path
-  "Replaces all occurrences of {k1}, {k2} ... with the value map provided.
-  Example:
-  given a/path/{id}/on/{not-this}/root/{id} and {:id hello}
-  results in: a/path/hello/{not-this}/root/hello."
-  [path value-map]
-  (let [[param value] (first value-map)]
-    (if (nil? param)
-      path
-      (recur (str/replace path
-                          (re-pattern (format "\\{([%s].*?)\\}"
-                                              (-> param
-                                                  name
-                                                  Pattern/quote)))
-                          (str value))
-             (dissoc value-map param)))))
 
 (defn api-request
   ([method url]
@@ -108,20 +60,20 @@
 
         supplied-params (:params invoke-opts)]
     (try
-      (let [api (load-api)
+      (let [api (c/load-api)
             ops-opts (doc api op-name url)
             ops-params (:params ops-opts)
-            request-params (reduce (partial gather-params supplied-params)
+            request-params (reduce (partial c/gather-params supplied-params)
                                    {}
                                    ops-params)
             query-params (:query request-params)
             interpolate-path-opts (:path request-params)
             method (:method ops-opts)
             path (:path ops-opts)
-            new-path (interpolate-path path interpolate-path-opts)
+            new-path (c/interpolate-path path interpolate-path-opts)
             invoke-url (if (empty? query-params)
                          (str url new-path)
-                         (str url new-path "?" (create-query query-params)))
+                         (str url new-path "?" (c/create-query query-params)))
             response-body (:body (api-request method invoke-url {:basic-auth [user pass]}))]
         (json->edn response-body))
       (catch clojure.lang.ExceptionInfo e
