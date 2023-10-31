@@ -33,12 +33,6 @@
         (edn/read))
     (bail-out "Cannot load api, the engine, version combo may not be supported.")))
 
-(defn ops
-  "Returns the supported operations for sonatype nexus (v1) API."
-  [{:keys [v1]}]
-  (->> v1
-       (keys)))
-
 (defn doc
   "Returns essential information about the operation."
   [{:keys [v1]} op endpoint]

@@ -61,32 +61,14 @@
           (recur new-token))))
     @components))
 
-(defn get-images-data-by-name [cfg repo-name image-name]
-  (let [{:keys [endpoint user pass]} cfg
-        conn {:endpoint endpoint
-              :creds {:user user :pass pass}}
-        opts {:operation :search
-              :params {:repository repo-name
-                       :name image-name}}
-        components (atom [])]
-    (loop [token nil]
-      (let [opts (if token (assoc-in opts [:params :continuationToken] token) opts)
-            response (cc/invoke conn opts)
-            items (:items response)
-            new-token (:continuationToken response)]
-        (swap! components concat items)
-        (when new-token
-          (recur new-token))))
-    @components))
-
 (defn get-images-data-by-version [cfg repo-name image-name version]
   (let [{:keys [endpoint user pass]} cfg
         conn {:endpoint endpoint
               :creds {:user user :pass pass}}
         opts {:operation :search
-              :params {:repository repo-name
-                       :name image-name
-                       :version version}}
+              :params {:repository repo-name}}
+        opts (if image-name (assoc-in opts [:params :name] image-name) opts)
+        opts (if version (assoc-in opts [:params :version] version) opts)
         components (atom [])]
     (loop [token nil]
       (let [opts (if token (assoc-in opts [:params :continuationToken] token) opts)
@@ -105,13 +87,12 @@
         tag (:version image)]
     {:id id :repository repo :name image-name :tag tag}))
 
-(defn images-new-structure 
+
+(defn images-new-structure
   ([cfg repo-name]
-   (let [data (get-images-data cfg repo-name)]
-     (map select-image-fields data)))
+   (images-new-structure cfg repo-name nil))
   ([cfg repo-name image-name]
-   (let [data (get-images-data-by-name cfg repo-name image-name)]
-     (map select-image-fields data)))
+   (images-new-structure cfg repo-name image-name nil))
   ([cfg repo-name image-name version]
    (let [data (get-images-data-by-version cfg repo-name image-name version)]
      (map select-image-fields data))))
@@ -121,13 +102,16 @@
         repo (str repository "/" name ":" tag)]
     (println repo "\t\t" id)))
 
-(defn list-images 
-  ([cfg repo-name] (let [images (images-new-structure cfg repo-name)]
-                     (doall (map print-image-format images))))
-  ([cfg repo-name image-name] (let [images (images-new-structure cfg repo-name image-name)]
-                                (doall (map print-image-format images))))
-  ([cfg repo-name image-name version] (let [images (images-new-structure cfg repo-name image-name version)]
-                                        (doall (map print-image-format images)))))
+(defn list-images
+  ([cfg repo-name]
+   (list-images cfg repo-name nil))
+
+  ([cfg repo-name image-name]
+   (list-images cfg repo-name image-name nil))
+
+  ([cfg repo-name image-name version]
+   (let [images (images-new-structure cfg repo-name image-name version)]
+     (doall (map print-image-format images)))))
 
 (defn delete-image [cfg image]
   (let [{:keys [id]} image
@@ -178,6 +162,3 @@
                               (:image options)
                               (:tag options)) (delete-images-by-tag cfg repo-name image-name version))
               (usage summary)))))
-
-
-
