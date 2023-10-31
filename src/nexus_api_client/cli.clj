@@ -120,6 +120,7 @@
               :creds {:user user :pass pass}}
         opts {:operation :deleteComponent
               :params {:name id}}]
+    #_(cc/invoke conn opts) ;; uncomment this line to delete images
     (println ":deleteComponent " id)))
 
 (defn dry-run-delete [cfg repo image tag]
@@ -129,8 +130,7 @@
 
 (defn delete-images-by-tag [cfg repo image tag]
   (let [images (images-new-structure cfg repo image tag)]
-    #_(doall (map #(delete-image cfg %) images))
-    (doall (map #(println ":deleteComponent " (:id %) ) images))))
+    (doall (map #(delete-image cfg %) images))))
 
 
 (defn -main [& args]
