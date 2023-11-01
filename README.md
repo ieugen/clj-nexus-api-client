@@ -145,11 +145,19 @@ user=> (c/invoke {:endpoint "http://localhost:8081/service/rest"
 ## CLI app with [Babashka](https://babashka.org/)
 
 - you must have babashka installed locally
+- createa bb.edn to run nexus client as a babashka task
+```clojure
+{:min-bb-version "1.3.184"
+ :deps {io.github.ieugen/clj-nexus-api-client {:git/sha "0a760be5a182aafba07cd980d3a5f5959fee7025"}}
+ :tasks {:requires ([nexus-api-client.cli :as n])
+         nexus {:doc "Curățenie în imagini docker"
+                :task (apply n/-main *command-line-args*)}}}
+```
 - this app is designed to access sonatype nexus api endpoint and list and delete docker images;
 - by default, it loads a file named "config.edn" from the root of the project,
   which contains the config options:
         
-        {:endpoint "https://sonatype-nexus-url" 
+        {:endpoint "https://sonatype-nexus-url/service/rest" 
          :user "username" 
          :pass "password"}
 
