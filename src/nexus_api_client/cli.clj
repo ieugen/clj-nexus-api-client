@@ -6,7 +6,7 @@
 (defn usage [options-summary]
   (println (->> ["Usage:"
                   " list [params]"
-                  " delete [params] - all params are required for this action" 
+                  " delete [params] - all params are required for this action"
              ""
              "Parameters:"
              "  -r or --repository <repository-name>"
@@ -120,12 +120,12 @@
               :creds {:user user :pass pass}}
         opts {:operation :deleteComponent
               :params {:name id}}]
-    #_(cc/invoke conn opts) ;; uncomment this line to delete images
-    (println ":deleteComponent " id)))
+    (println "Deleting image: " id)
+    (cc/invoke conn opts)))
 
 (defn dry-run-delete [cfg repo image tag]
   (let [images (images-new-structure cfg repo image tag)]
-    (doall (map #(do (println "Deleting image: ") 
+    (doall (map #(do (println "Deleting image: ")
                      (print-image-format %)) images))))
 
 (defn delete-images-by-tag [cfg repo image tag]
