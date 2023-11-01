@@ -97,10 +97,14 @@
    (let [data (get-images-data-by-version cfg repo-name image-name version)]
      (map select-image-fields data))))
 
+(defn image->str-plain
+  "Image plain string represenataion."
+  [image]
+  (let [{:keys [id repository name tag]} image]
+    (str repository "/" name ":" tag "\t\t" id)))
+
 (defn print-image-format [image]
-  (let [{:keys [id repository name tag]} image
-        repo (str repository "/" name ":" tag)]
-    (println repo "\t\t" id)))
+  (println (image->str-plain image)))
 
 (defn list-images
   ([cfg repo-name]
@@ -119,8 +123,8 @@
         conn {:endpoint endpoint
               :creds {:user user :pass pass}}
         opts {:operation :deleteComponent
-              :params {:name id}}]
-    (println "Deleting image: " id)
+              :params {:id id}}]
+    (println "Deleting image: " (image->str-plain image))
     (cc/invoke conn opts)))
 
 (defn dry-run-delete [cfg repo image tag]
