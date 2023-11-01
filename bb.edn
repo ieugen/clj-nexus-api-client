@@ -1,10 +1,6 @@
 {:min-bb-version "1.0.0"
  :paths ["src" "resources"]
+ :deps {org.babashka/http-client {:mvn/version "0.3.11"}}
  :tasks {:requires ([nexus-api-client.cli :as c])
-  hello {:doc "Print hello"
-         :task (let [args *command-line-args*]
-                 (println "hello" )
-                 (doseq [a args]
-                   (println "Arg" a))
-                 (println "Hello 2:")
-                 (c/hello-cli *command-line-args*))}}}
+         nexus {:doc "Print docker images"
+               :task (apply c/-main *command-line-args*)}}}
