@@ -20,10 +20,11 @@
 (defn error-msg [errors]
   (binding [*out* *err*]
     (println "The following errors occurred while parsing your command:\n\n"
-             (str/join  \newline errors))))
+             errors)))
 
 (def global-cli-options
-  [[nil "--config NAME" "Configuration file name" :default "config.edn"]
+  [[nil "--config-file NAME" "Configuration file name"]
+   [nil "--config NAME" "Configuration as edn"]
    ["-r" "--repository NAME" "list the images for a specific repository"]
    ["-i" "--image NAME" "list the tags for a specific image"]
    ["-t" "--tag NAME" "filter images by tag name"]
@@ -138,16 +139,18 @@
 
 
 (defn -main [& args]
-  (let [{:keys [options arguments errors summary]} (parse-opts args  global-cli-options)
+  (let [parsed-options (parse-opts args  global-cli-options)
+        {:keys [options arguments errors summary]} parsed-options 
+        config-file (:config-file options)
         config (:config options)
         action (first arguments)
         repo-name (:repository options)
         image-name (:image options)
         version (:tag options)
-        cfg (cc/load-config! config)]
+        cfg (cc/load-config! config-file config)]
     (cond
       errors (error-msg errors)
-      (nil? (:config options)) (error-msg "No config provided \n --config [file-name]>")
+      (empty? cfg) (error-msg "No config provided \n --config [file-name]")
       (:help options) (usage summary)
       :else (case action
               "list" (cond

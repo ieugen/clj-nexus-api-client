@@ -5,10 +5,89 @@
             [clojure.java.io :as io]
             [babashka.http-client :as http])
   (:import [java.io PushbackReader]
-           [java.util.regex Pattern]))
+           [java.util.regex Pattern]
+           [java.io IOException]))
 
+(defn deep-merge
+  "From https://clojuredocs.org/clojure.core/merge ."
+  [a & maps]
+  (if (map? a)
+    (apply merge-with deep-merge a maps)
+    (apply merge-with deep-merge maps)))
+
+(defn println-err
+  [& more]
+  (binding [*out* *err*]
+    (apply println more)))
+
+(defn env->config!
+  "Try to load nexus configuration options from environment.
+   We produce a configuration that can be merged with other configs.
+   Missing values are ok as configuring via env is optional.
+   Looks and processes the following env vars:
+   - NEXUS_CONFIG - read string as edn and return config.
+     Do not process any other nexus env var.
+   - NEXUS_ENDPOINT - string
+   - NEXUS_USER - string
+   - NEXUS_PASSWORD - read string as edn
+   Return: A map representing the nexus configuration."
+  ([]
+   (env->config! (System/getenv)))
+  ([env]
+   (let [config (get env "NEXUS_CONFIG")]
+     (if config
+       (edn/read-string config)
+       ;; we don't have NEXUS_CONFIG - check the other vars
+       (let [endpoint (get env "NEXUS_ENDPOINT")
+             user (get env "NEXUS_USER")
+             password (get env "NEXUS_PASSWORD")]
+         (cond-> {}
+           endpoint (assoc :endpoint (keyword endpoint))
+           user (assoc :user user)
+           password (assoc :pass password)))))))
+
+(defn cli-args->config
+  "Parse any nexus configuration options from cli args.
+   Return a nexus configuration map with any values.
+   We expect the args we receive to be values
+   processed by tools.cli parse-opts fn."
+  [config-edn-str]
+  (let [config (edn/read-string config-edn-str)]
+    (if (map? config)
+      config
+      {})))
+
+(defn file->config!
+  "Read config-file as an edn.
+   If config-file is nil, return nil.
+   On IO exception print warning and return nil."
+  [^String config-file]
+  (when config-file
+    (let [config-path (.getAbsolutePath (io/file config-file))]
+      (try
+        (edn/read-string (slurp config-path))
+        (catch IOException e
+          (println-err
+           "WARN: Error reading config" (.getMessage e)
+           "\nYou can use --config path_to_file to specify a path to config file"))))))
 
 (defn load-config!
+  "Load configuration and merge options.
+   Options are loaded in this order.
+   Subsequent values are deepmerged and replace previous ones.
+   - configuration file - if it exists and we can parse it as edn
+   - environment variables
+   - command line arguments passed to the application
+   Return a migratus configuration map."
+  [config-file config-data]
+  (let [config (file->config! config-file)
+        env (env->config!)
+        args (cli-args->config config-data)]
+    (deep-merge config env args)))
+
+
+
+#_(defn load-config!
   "Returns the content of config file as a clojure map datastructure"
   [^String config]
   (let [config-path (.getAbsolutePath (io/file config))]
@@ -82,7 +161,7 @@
   ;;  (println method url opts)
    (try (http/request
          (merge {:method method :uri (str url)} opts))
-        (catch java.lang.IllegalStateException _
+        (catch java.lang.Exception _
           (println "Bad request: \n method: " method "\n uri: " url "\n opts: " opts)))))
 
 
