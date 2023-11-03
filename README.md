@@ -142,10 +142,11 @@ user=> (c/invoke {:endpoint "http://localhost:8081/service/rest"
 ```
 
 
-## CLI app with [Babashka](https://babashka.org/)
+## CLI app
 
-- you must have babashka installed locally
-- createa bb.edn to run nexus client as a babashka task
+- this cli app is using [Babashka](https://babashka.org/) as a scripting environment, so it must be installed locally
+- create a bb.edn to run nexus client as a babashka task
+
 ```clojure
 {:min-bb-version "1.3.184"
  :deps {io.github.ieugen/clj-nexus-api-client {:git/sha "0a760be5a182aafba07cd980d3a5f5959fee7025"}}
@@ -154,53 +155,67 @@ user=> (c/invoke {:endpoint "http://localhost:8081/service/rest"
                 :task (apply n/-main *command-line-args*)}}}
 ```
 - this app is designed to access sonatype nexus api endpoint and list and delete docker images;
-- by default, it loads a file named "config.edn" from the root of the project,
-  which contains the config options:
+- by default, it loads a file named "config.edn" from the root of the project, which contains the config options:
         
         {:endpoint "https://sonatype-nexus-url/service/rest" 
          :user "username" 
          :pass "password"}
 
-- you can change the config by creating "another-file.edn" with the above structure
- and pass the config:
+- you can change the config by creating "another-file.edn" with the above structure and pass the config:
 
- ```sh
- bb nexus --config another-file.edn list
- ```
+```sh
+
+bb nexus --config another-file.edn list
+
+```
 
 ### Usage:
- list [params]
- delete [params] - all params are required for this action
-### Parameters:"
-  -r or --repository <repository-name>
-  -i or --image <image-name>
-  -t or --tag <image-tag>
-  --dry-run - used only with 'delete' action to list the images that will be deleted
 
-  NOTE: <image-name> and <image-tag> can be pattern matching names (wildcards):
-  
-  
-  ```sh
-  bb nexus list -r repo-1 -i dev* -t beta* 
-  ```
+- list [params]
+- delete [params] - all params are required for this action
+
+### Parameters:
+
+- -r or --repository <repository-name>
+- -i or --image <image-name>
+- -t or --tag <image-tag>
+- --dry-run - used only with 'delete' action to list the images that will be deleted
+
 
 ### Examples
-- list :
-      bb list  - list all the repositories
-      bb list -r <repo-name>  -> list all the images
-      bb list -r <repo-name> -i <image-name> -> list all the tags for a specific image
- - delete : 
-      bb delete -r <repo-name> -i <image-name> -t <version> --dry-run -> dry-runs the delete process with information about the images that will be deleted
-      bb delete -r <repo-name> -i <image-name> -t <version> -> deletes the images with the specified tag
 
-    'bb nexus list' - list all the repositories
-    'bb nexus list -r repo-1' - lists all the images from repo-1 repository
-    'bb nexus list -r repo-1 -i app-dev' - lists all tags for images in repo-1 repository
-    'bb nexus list -r repo-1 -i app-dev -t prod* ' - lists all the images named app-dev, tagged with prod* from repo-1
-    'bb nexus delete -r repo-1 -i app-dev -t prod* --dry-run - lists all the images named app-dev, tagged with prod* from repo-1 which will be deleted
-    'bb nexus delete -r repo-1 -i app-dev -t prod* - deletes the images named app-dev, tagged with prod* from repo-1"
+- list:
 
+```sh
 
+# list all the repositories
+bb nexus list
+
+# list all the images
+bb nexus list -r <repo-name> 
+
+# list all the tags for a specific image
+bb nexus list -r <repo-name> -i <image-name> 
+
+# list all the images by tag
+bb nexus list -r <repo-name> -i <image-name> -t <tag>
+
+# <image-name> and <image-tag> can be pattern matching names (wildcards):
+bb nexus list -r repo-1 -i dev* -t beta* 
+
+```
+
+- delete: 
+
+```sh
+
+# dry-run the delete process with information about the images that will be deleted
+bb nexus delete -r <repo-name> -i <image-name> -t <version> --dry-run 
+
+# deletes the images with the specified tag
+bb nexus delete -r <repo-name> -i <image-name> -t <version>
+
+```
 
 
 
