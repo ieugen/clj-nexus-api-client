@@ -20,10 +20,25 @@
 (defn error-msg [errors]
   (binding [*out* *err*]
     (println "The following errors occurred while parsing your command:\n\n"
-             (str/join  \newline errors))))
+             errors)))
+
+(defn valid-config?
+    "Validate a nexus configuration for required options.
+   If valid, return true.
+   If invalid return map with reasons why validation failed."
+    [config]
+    (if (map? config)
+      (let [endpoint (:endpoint config)
+            user (:user config)
+            pass (:pass config)]
+        (if (and endpoint user pass) 
+          true
+          {:errors [(str "Missing keys in configuration: " (when (nil? endpoint) ":endpoint ") (when (nil? user) ":user ") (when (nil? pass) ":pass") )]}))
+      {:errors ["Config is nil or not a map"]}))
 
 (def global-cli-options
-  [[nil "--config NAME" "Configuration file name" :default "config.edn"]
+  [[nil "--config-file NAME" "Configuration file name"]
+   [nil "--config NAME" "Configuration as edn"]
    ["-r" "--repository NAME" "list the images for a specific repository"]
    ["-i" "--image NAME" "list the tags for a specific image"]
    ["-t" "--tag NAME" "filter images by tag name"]
@@ -44,22 +59,6 @@
     (println (apply str (repeat 25 "-")))
     (doseq [{:keys [name]} repos] (println name))))
 
-(defn get-images-data [cfg repo-name]
-  (let [{:keys [endpoint user pass]} cfg
-        conn {:endpoint endpoint
-              :creds {:user user :pass pass}}
-        opts {:operation :getComponents
-              :params {:repository repo-name}}
-        components (atom [])]
-    (loop [token nil]
-      (let [opts (if token (assoc-in opts [:params :continuationToken] token) opts)
-            response (cc/invoke conn opts)
-            items (:items response)
-            new-token (:continuationToken response)]
-        (swap! components concat items)
-        (when new-token
-          (recur new-token))))
-    @components))
 
 (defn get-images-data-by-version [cfg repo-name image-name version]
   (let [{:keys [endpoint user pass]} cfg
@@ -138,16 +137,19 @@
 
 
 (defn -main [& args]
-  (let [{:keys [options arguments errors summary]} (parse-opts args  global-cli-options)
+  (let [parsed-options (parse-opts args  global-cli-options)
+        {:keys [options arguments errors summary]} parsed-options 
+        config-file (:config-file options)
         config (:config options)
         action (first arguments)
         repo-name (:repository options)
         image-name (:image options)
         version (:tag options)
-        cfg (cc/load-config! config)]
+        cfg (cc/load-config! config-file config)
+        valid-cfg? (valid-config? cfg)]
     (cond
       errors (error-msg errors)
-      (nil? (:config options)) (error-msg "No config provided \n --config [file-name]>")
+      (:errors valid-cfg?) (error-msg (:errors valid-cfg?))
       (:help options) (usage summary)
       :else (case action
               "list" (cond
