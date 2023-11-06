@@ -85,19 +85,6 @@
         args (cli-args->config config-data)]
     (deep-merge config env args)))
 
-
-
-#_(defn load-config!
-  "Returns the content of config file as a clojure map datastructure"
-  [^String config]
-  (let [config-path (.getAbsolutePath (io/file config))]
-    (try
-      (read-string (slurp config-path))
-      (catch java.io.FileNotFoundException e
-        (binding [*out* *err*]
-          (println "Missing config file" (.getMessage e)
-                   "\nYou can use --config path_to_file to specify a path to config file"))))))
-
 (defn bail-out
   [^String message]
   (throw (IllegalArgumentException. message)))
